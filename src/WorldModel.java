@@ -29,4 +29,11 @@ public final class WorldModel {
         }
         return list;
     }
+
+    public void addEntity(Entity entity) {
+        if (Functions.withinBounds(this, entity.position)) {
+            Functions.setOccupancyCell(this, entity.position, entity);
+            this.entities.add(entity);
+        }
+    }
 }

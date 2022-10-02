@@ -80,66 +80,35 @@ public final class Functions {
         }
     }
 
-    public static void nextImage(Entity entity) {
-        entity.imageIndex = entity.imageIndex + 1;
-    }
 
-    public static void executeAction(Action action, EventScheduler scheduler) {
-        switch (action.kind) {
-            case ACTIVITY:
-                executeActivityAction(action, scheduler);
-                break;
 
-            case ANIMATION:
-                executeAnimationAction(action, scheduler);
-                break;
-        }
-    }
 
-    public static void executeAnimationAction(Action action, EventScheduler scheduler) {
-        nextImage(action.entity);
 
-        if (action.repeatCount != 1) {
-            scheduler.scheduleEvent( action.entity, createAnimationAction(action.entity, Math.max(action.repeatCount - 1, 0)), getAnimationPeriod(action.entity));
-        }
-    }
 
     public static void executeActivityAction(Action action, EventScheduler scheduler) {
         switch (action.entity.kind) {
             case SAPLING:
-                executeSaplingActivity(action.entity, action.world, action.imageStore, scheduler);
+                action.entity.executeSaplingActivity(action.world, action.imageStore, scheduler);
                 break;
             case TREE:
-                executeTreeActivity(action.entity, action.world, action.imageStore, scheduler);
+                action.entity.executeTreeActivity(action.world, action.imageStore, scheduler);
                 break;
             case FAIRY:
                 executeFairyActivity(action.entity, action.world, action.imageStore, scheduler);
                 break;
             case DUDE_NOT_FULL:
-                executeDudeNotFullActivity(action.entity, action.world, action.imageStore, scheduler);
+                action.entity.executeDudeNotFullActivity(action.world, action.imageStore, scheduler);
                 break;
             case DUDE_FULL:
-                executeDudeFullActivity(action.entity, action.world, action.imageStore, scheduler);
+                action.entity.executeDudeFullActivity(action.world, action.imageStore, scheduler);
                 break;
             default:
                 throw new UnsupportedOperationException(String.format("executeActivityAction not supported for %s", action.entity.kind));
         }
     }
 
-    public static void executeSaplingActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        entity.health++;
-        if (!transformPlant(entity, world, scheduler, imageStore)) {
-            scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-        }
-    }
 
-    public static void executeTreeActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
 
-        if (!transformPlant(entity, world, scheduler, imageStore)) {
-
-            scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-        }
-    }
 
     public static void executeFairyActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity> fairyTarget = findNearest(world, entity.position, new ArrayList<>(List.of(EntityKind.STUMP)));
@@ -151,7 +120,7 @@ public final class Functions {
 
                 Entity sapling = createSapling(SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos, getImageList(imageStore, SAPLING_KEY), 0);
 
-                addEntity(world, sapling);
+                world.addEntity(sapling);
                 scheduleActions(sapling, scheduler, world, imageStore);
             }
         }
@@ -159,23 +128,8 @@ public final class Functions {
         scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
     }
 
-    public static void executeDudeNotFullActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> target = findNearest(world, entity.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
 
-        if (target.isEmpty() || !moveToNotFull(entity, world, target.get(), scheduler) || !transformNotFull(entity, world, scheduler, imageStore)) {
-            scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-        }
-    }
 
-    public static void executeDudeFullActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> fullTarget = findNearest(world, entity.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
-
-        if (fullTarget.isPresent() && moveToFull(entity, world, fullTarget.get(), scheduler)) {
-            transformFull(entity, world, scheduler, imageStore);
-        } else {
-            scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-        }
-    }
 
 
     public static void scheduleActions(Entity entity, EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
@@ -220,7 +174,7 @@ public final class Functions {
             removeEntity(world, scheduler, entity);
             unscheduleAllEvents(scheduler, entity);
 
-            addEntity(world, dude);
+            world.addEntity(dude);
             scheduleActions(dude, scheduler, world, imageStore);
 
             return true;
@@ -234,7 +188,7 @@ public final class Functions {
 
         removeEntity(world, scheduler, entity);
 
-        addEntity(world, dude);
+        world.addEntity(dude);
         scheduleActions(dude, scheduler, world, imageStore);
     }
 
@@ -255,7 +209,7 @@ public final class Functions {
 
             removeEntity(world, scheduler, entity);
 
-            addEntity(world, stump);
+            world.addEntity(stump);
 
             return true;
         }
@@ -269,7 +223,7 @@ public final class Functions {
 
             removeEntity(world, scheduler, entity);
 
-            addEntity(world, stump);
+            world.addEntity(stump);
 
             return true;
         } else if (entity.health >= entity.healthLimit) {
@@ -277,7 +231,7 @@ public final class Functions {
 
             removeEntity(world, scheduler, entity);
 
-            addEntity(world, tree);
+            world.addEntity(tree);
             scheduleActions(tree, scheduler, world, imageStore);
 
             return true;
@@ -315,18 +269,7 @@ public final class Functions {
         }
     }
 
-    public static boolean moveToFull(Entity dude, WorldModel world, Entity target, EventScheduler scheduler) {
-        if (adjacent(dude.position, target.position)) {
-            return true;
-        } else {
-            Point nextPos = nextPositionDude(dude, world, target.position);
 
-            if (!dude.position.equals(nextPos)) {
-                moveEntity(world, scheduler, dude, nextPos);
-            }
-            return false;
-        }
-    }
 
     public static Point nextPositionFairy(Entity entity, WorldModel world, Point destPos) {
         int horiz = Integer.signum(destPos.x - entity.position.x);
@@ -401,7 +344,7 @@ public final class Functions {
             Event next = scheduler.eventQueue.poll();
             Functions.removePendingEvent(scheduler, next);
             scheduler.currentTime = next.time;
-            Functions.executeAction(next.action, scheduler);
+            next.action.executeAction(scheduler);
         }
         scheduler.currentTime = stopTime;
     }
@@ -476,7 +419,7 @@ public final class Functions {
             throw new IllegalArgumentException("position occupied");
         }
 
-        addEntity(world, entity);
+        world.addEntity(entity);
     }
 
     public static boolean withinBounds(WorldModel world, Point pos) {
@@ -531,12 +474,7 @@ public final class Functions {
        Assumes that there is no entity currently occupying the
        intended destination cell.
     */
-    public static void addEntity(WorldModel world, Entity entity) {
-        if (withinBounds(world, entity.position)) {
-            setOccupancyCell(world, entity.position, entity);
-            world.entities.add(entity);
-        }
-    }
+
 
     public static void moveEntity(WorldModel world, EventScheduler scheduler, Entity entity, Point pos) {
         Point oldPos = entity.position;

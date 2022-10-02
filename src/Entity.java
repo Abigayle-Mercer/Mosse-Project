@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import processing.core.PImage;
 
@@ -41,4 +40,56 @@ public final class Entity {
         return this.id.isEmpty() ? null :
                 String.format("%s %d %d %d", this.id, this.position.x, this.position.y, this.imageIndex);
     }
+
+    public void nextImage() {
+        this.imageIndex = this.imageIndex + 1;
+    };
+
+    public void executeSaplingActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        this.health++;
+        if (!Functions.transformPlant(this, world, scheduler, imageStore)) {
+            scheduler.scheduleEvent( this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public void executeTreeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+
+        if (!Functions.transformPlant(this, world, scheduler, imageStore)) {
+
+            scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public void executeDudeNotFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> target = Functions.findNearest(world, this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
+
+        if (target.isEmpty() || !Functions.moveToNotFull(this, world, target.get(), scheduler) || !Functions.transformNotFull(this, world, scheduler, imageStore)) {
+            scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public void executeDudeFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> fullTarget = Functions.findNearest(world, this.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
+
+        if (fullTarget.isPresent() && this.moveToFull(world, fullTarget.get(), scheduler)) {
+            Functions.transformFull(this, world, scheduler, imageStore);
+        } else {
+            scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public boolean moveToFull(WorldModel world, Entity target, EventScheduler scheduler) {
+        if (Functions.adjacent(this.position, target.position)) {
+            return true;
+        } else {
+            Point nextPos = Functions.nextPositionDude(this, world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                Functions.moveEntity(world, scheduler, this, nextPos);
+            }
+            return false;
+        }
+    }
+
+
 }
