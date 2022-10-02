@@ -100,7 +100,7 @@ public final class Functions {
         nextImage(action.entity);
 
         if (action.repeatCount != 1) {
-            scheduleEvent(scheduler, action.entity, createAnimationAction(action.entity, Math.max(action.repeatCount - 1, 0)), getAnimationPeriod(action.entity));
+            scheduler.scheduleEvent( action.entity, createAnimationAction(action.entity, Math.max(action.repeatCount - 1, 0)), getAnimationPeriod(action.entity));
         }
     }
 
@@ -129,7 +129,7 @@ public final class Functions {
     public static void executeSaplingActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         entity.health++;
         if (!transformPlant(entity, world, scheduler, imageStore)) {
-            scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+            scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
         }
     }
 
@@ -137,7 +137,7 @@ public final class Functions {
 
         if (!transformPlant(entity, world, scheduler, imageStore)) {
 
-            scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+            scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
         }
     }
 
@@ -156,14 +156,14 @@ public final class Functions {
             }
         }
 
-        scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+        scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
     }
 
     public static void executeDudeNotFullActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity> target = findNearest(world, entity.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
 
         if (target.isEmpty() || !moveToNotFull(entity, world, target.get(), scheduler) || !transformNotFull(entity, world, scheduler, imageStore)) {
-            scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+            scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
         }
     }
 
@@ -173,7 +173,7 @@ public final class Functions {
         if (fullTarget.isPresent() && moveToFull(entity, world, fullTarget.get(), scheduler)) {
             transformFull(entity, world, scheduler, imageStore);
         } else {
-            scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+            scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
         }
     }
 
@@ -181,32 +181,32 @@ public final class Functions {
     public static void scheduleActions(Entity entity, EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
         switch (entity.kind) {
             case DUDE_FULL:
-                scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
                 break;
 
             case DUDE_NOT_FULL:
-                scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
                 break;
 
             case OBSTACLE:
-                scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
                 break;
 
             case FAIRY:
-                scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
                 break;
 
             case SAPLING:
-                scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
                 break;
 
             case TREE:
-                scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
                 break;
 
             default:
@@ -375,18 +375,6 @@ public final class Functions {
         return min + rand.nextDouble() * (max - min);
     }
 
-    public static void scheduleEvent(EventScheduler scheduler, Entity entity, Action action, double afterPeriod) {
-        double time = scheduler.currentTime + afterPeriod;
-
-        Event event = new Event(action, time, entity);
-
-        scheduler.eventQueue.add(event);
-
-        // update list of pending events for the given entity
-        List<Event> pending = scheduler.pendingEvents.getOrDefault(entity, new LinkedList<>());
-        pending.add(event);
-        scheduler.pendingEvents.put(entity, pending);
-    }
 
 
     public static void unscheduleAllEvents(EventScheduler scheduler, Entity entity) {

@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Keeps track of events that have been scheduled.
@@ -16,4 +13,20 @@ public final class EventScheduler {
         this.pendingEvents = new HashMap<>();
         this.currentTime = 0;
     }
+
+    public void scheduleEvent(Entity entity, Action action, double afterPeriod) {
+        double time = this.currentTime + afterPeriod;
+
+        Event event = new Event(action, time, entity);
+
+        this.eventQueue.add(event);
+
+        // update list of pending events for the given entity
+        List<Event> pending = this.pendingEvents.getOrDefault(entity, new LinkedList<>());
+        pending.add(event);
+        this.pendingEvents.put(entity, pending);
+    }
+
+
+
 }
