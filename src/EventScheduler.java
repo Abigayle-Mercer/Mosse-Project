@@ -41,20 +41,17 @@ public final class EventScheduler {
         double stopTime = this.currentTime + time;
         while (!this.eventQueue.isEmpty() && this.eventQueue.peek().time <= stopTime) {
             Event next = this.eventQueue.poll();
-            removePendingEvent(next);
+            next.removePendingEvent(this);
             this.currentTime = next.time;
             next.action.executeAction(this);
         }
         this.currentTime = stopTime;
     }
 
-    public void removePendingEvent(Event event) {
-        List<Event> pending = this.pendingEvents.get(event.entity);
 
-        if (pending != null) {
-            pending.remove(event);
-        }
-    }
+
+
+
 
 
 

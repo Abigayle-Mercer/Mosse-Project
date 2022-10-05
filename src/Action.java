@@ -45,7 +45,7 @@ public final class Action {
                 this.entity.executeTreeActivity(this.world, this.imageStore, scheduler);
                 break;
             case FAIRY:
-                Functions.executeFairyActivity(this.entity, this.world, this.imageStore, scheduler);
+                this.entity.executeFairyActivity(this.world, this.imageStore, scheduler);
                 break;
             case DUDE_NOT_FULL:
                 this.entity.executeDudeNotFullActivity(this.world, this.imageStore, scheduler);

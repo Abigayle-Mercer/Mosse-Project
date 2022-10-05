@@ -76,72 +76,6 @@ public final class Functions {
 
 
 
-    public static void executeFairyActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> fairyTarget = findNearest(world, entity.position, new ArrayList<>(List.of(EntityKind.STUMP)));
-
-        if (fairyTarget.isPresent()) {
-            Point tgtPos = fairyTarget.get().position;
-
-            if (moveToFairy(entity, world, fairyTarget.get(), scheduler)) {
-
-                Entity sapling = createSapling(SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos, imageStore.getImageList(SAPLING_KEY), 0);
-
-                world.addEntity(sapling);
-                scheduleActions(sapling, scheduler, world, imageStore);
-            }
-        }
-
-        scheduler.scheduleEvent( entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-    }
-
-
-
-
-
-    public static void scheduleActions(Entity entity, EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-        switch (entity.kind) {
-            case DUDE_FULL:
-                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), entity.getAnimationPeriod());
-                break;
-
-            case DUDE_NOT_FULL:
-                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), entity.getAnimationPeriod());
-                break;
-
-            case OBSTACLE:
-                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), entity.getAnimationPeriod());
-                break;
-
-            case FAIRY:
-                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), entity.getAnimationPeriod());
-                break;
-
-            case SAPLING:
-                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), entity.getAnimationPeriod());
-                break;
-
-            case TREE:
-                scheduler.scheduleEvent(entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-                scheduler.scheduleEvent(entity, createAnimationAction(entity, 0), entity.getAnimationPeriod());
-                break;
-
-            default:
-        }
-    }
-
-
-    public static void transformFull(Entity entity, WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        Entity dude = createDudeNotFull(entity.id, entity.position, entity.actionPeriod, entity.animationPeriod, entity.resourceLimit, entity.images);
-
-        removeEntity(world, scheduler, entity);
-
-        world.addEntity(dude);
-        scheduleActions(dude, scheduler, world, imageStore);
-    }
 
 
 
@@ -149,73 +83,25 @@ public final class Functions {
 
 
 
-    public static boolean moveToFairy(Entity fairy, WorldModel world, Entity target, EventScheduler scheduler) {
-        if (adjacent(fairy.position, target.position)) {
-            removeEntity(world, scheduler, target);
-            return true;
-        } else {
-            Point nextPos = nextPositionFairy(fairy, world, target.position);
-
-            if (!fairy.position.equals(nextPos)) {
-                moveEntity(world, scheduler, fairy, nextPos);
-            }
-            return false;
-        }
-    }
-
-    public static boolean moveToNotFull(Entity dude, WorldModel world, Entity target, EventScheduler scheduler) {
-        if (adjacent(dude.position, target.position)) {
-            dude.resourceCount += 1;
-            target.health--;
-            return true;
-        } else {
-            Point nextPos = nextPositionDude(dude, world, target.position);
-
-            if (!dude.position.equals(nextPos)) {
-                moveEntity(world, scheduler, dude, nextPos);
-            }
-            return false;
-        }
-    }
 
 
 
-    public static Point nextPositionFairy(Entity entity, WorldModel world, Point destPos) {
-        int horiz = Integer.signum(destPos.x - entity.position.x);
-        Point newPos = new Point(entity.position.x + horiz, entity.position.y);
-
-        if (horiz == 0 || isOccupied(world, newPos)) {
-            int vert = Integer.signum(destPos.y - entity.position.y);
-            newPos = new Point(entity.position.x, entity.position.y + vert);
-
-            if (vert == 0 || isOccupied(world, newPos)) {
-                newPos = entity.position;
-            }
-        }
-
-        return newPos;
-    }
-
-    public static Point nextPositionDude(Entity entity, WorldModel world, Point destPos) {
-        int horiz = Integer.signum(destPos.x - entity.position.x);
-        Point newPos = new Point(entity.position.x + horiz, entity.position.y);
-
-        if (horiz == 0 || isOccupied(world, newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
-            int vert = Integer.signum(destPos.y - entity.position.y);
-            newPos = new Point(entity.position.x, entity.position.y + vert);
-
-            if (vert == 0 || isOccupied(world, newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
-                newPos = entity.position;
-            }
-        }
-
-        return newPos;
-    }
 
 
-    public static boolean adjacent(Point p1, Point p2) {
-        return (p1.x == p2.x && Math.abs(p1.y - p2.y) == 1) || (p1.y == p2.y && Math.abs(p1.x - p2.x) == 1);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static int getIntFromRange(int max, int min) {
         Random rand = new Random();
@@ -227,100 +113,28 @@ public final class Functions {
         return min + rand.nextDouble() * (max - min);
     }
 
-
-
-
-
-    public static void parseSapling(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == SAPLING_NUM_PROPERTIES) {
-            int health = Integer.parseInt(properties[SAPLING_HEALTH]);
-            Entity entity = createSapling(id, pt, imageStore.getImageList(SAPLING_KEY), health);
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", SAPLING_KEY, SAPLING_NUM_PROPERTIES));
-        }
+    public static int clamp(int value, int low, int high) {
+        return Math.min(high, Math.max(value, low));
     }
 
-    public static void parseDude(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == DUDE_NUM_PROPERTIES) {
-            Entity entity = createDudeNotFull(id, pt, Double.parseDouble(properties[DUDE_ACTION_PERIOD]), Double.parseDouble(properties[DUDE_ANIMATION_PERIOD]), Integer.parseInt(properties[DUDE_LIMIT]), imageStore.getImageList(DUDE_KEY));
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", DUDE_KEY, DUDE_NUM_PROPERTIES));
-        }
-    }
 
-    public static void parseFairy(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == FAIRY_NUM_PROPERTIES) {
-            Entity entity = createFairy(id, pt, Double.parseDouble(properties[FAIRY_ACTION_PERIOD]), Double.parseDouble(properties[FAIRY_ANIMATION_PERIOD]), imageStore.getImageList(FAIRY_KEY));
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", FAIRY_KEY, FAIRY_NUM_PROPERTIES));
-        }
-    }
 
-    public static void parseTree(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == TREE_NUM_PROPERTIES) {
-            Entity entity = createTree(id, pt, Double.parseDouble(properties[TREE_ACTION_PERIOD]), Double.parseDouble(properties[TREE_ANIMATION_PERIOD]), Integer.parseInt(properties[TREE_HEALTH]), imageStore.getImageList(TREE_KEY));
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", TREE_KEY, TREE_NUM_PROPERTIES));
-        }
-    }
 
-    public static void parseObstacle(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == OBSTACLE_NUM_PROPERTIES) {
-            Entity entity = createObstacle(id, pt, Double.parseDouble(properties[OBSTACLE_ANIMATION_PERIOD]), imageStore.getImageList(OBSTACLE_KEY));
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", OBSTACLE_KEY, OBSTACLE_NUM_PROPERTIES));
-        }
-    }
 
-    public static void parseHouse(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == HOUSE_NUM_PROPERTIES) {
-            Entity entity = createHouse(id, pt, imageStore.getImageList(HOUSE_KEY));
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", HOUSE_KEY, HOUSE_NUM_PROPERTIES));
-        }
-    }
-    public static void parseStump(WorldModel world, String[] properties, Point pt, String id, ImageStore imageStore) {
-        if (properties.length == STUMP_NUM_PROPERTIES) {
-            Entity entity = createStump(id, pt, imageStore.getImageList(STUMP_KEY));
-            tryAddEntity(world, entity);
-        }else{
-            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", STUMP_KEY, STUMP_NUM_PROPERTIES));
-        }
-    }
 
-    public static void tryAddEntity(WorldModel world, Entity entity) {
-        if (isOccupied(world, entity.position)) {
-            // arguably the wrong type of exception, but we are not
-            // defining our own exceptions yet
-            throw new IllegalArgumentException("position occupied");
-        }
 
-        world.addEntity(entity);
-    }
 
-    public static boolean withinBounds(WorldModel world, Point pos) {
-        return pos.y >= 0 && pos.y < world.numRows && pos.x >= 0 && pos.x < world.numCols;
-    }
 
-    public static boolean isOccupied(WorldModel world, Point pos) {
-        return withinBounds(world, pos) && world.getOccupancyCell(pos) != null;
-    }
 
     public static Optional<Entity> nearestEntity(List<Entity> entities, Point pos) {
         if (entities.isEmpty()) {
             return Optional.empty();
         } else {
             Entity nearest = entities.get(0);
-            int nearestDistance = distanceSquared(nearest.position, pos);
+            int nearestDistance = nearest.position.distanceSquared(pos);
 
             for (Entity other : entities) {
-                int otherDistance = distanceSquared(other.position, pos);
+                int otherDistance = other.position.distanceSquared(pos);
 
                 if (otherDistance < nearestDistance) {
                     nearest = other;
@@ -332,25 +146,11 @@ public final class Functions {
         }
     }
 
-    public static int distanceSquared(Point p1, Point p2) {
-        int deltaX = p1.x - p2.x;
-        int deltaY = p1.y - p2.y;
 
-        return deltaX * deltaX + deltaY * deltaY;
-    }
 
-    public static Optional<Entity> findNearest(WorldModel world, Point pos, List<EntityKind> kinds) {
-        List<Entity> ofType = new LinkedList<>();
-        for (EntityKind kind : kinds) {
-            for (Entity entity : world.entities) {
-                if (entity.kind == kind) {
-                    ofType.add(entity);
-                }
-            }
-        }
 
-        return nearestEntity(ofType, pos);
-    }
+
+
 
     /*
        Assumes that there is no entity currently occupying the
@@ -358,21 +158,8 @@ public final class Functions {
     */
 
 
-    public static void moveEntity(WorldModel world, EventScheduler scheduler, Entity entity, Point pos) {
-        Point oldPos = entity.position;
-        if (withinBounds(world, pos) && !pos.equals(oldPos)) {
-            world.setOccupancyCell(oldPos, null);
-            Optional<Entity> occupant = world.getOccupant(pos);
-            occupant.ifPresent(target -> removeEntity(world, scheduler, target));
-            world.setOccupancyCell(pos, entity);
-            entity.position = pos;
-        }
-    }
 
-    public static void removeEntity(WorldModel world, EventScheduler scheduler, Entity entity) {
-        scheduler.unscheduleAllEvents(entity);
-        world.removeEntityAt(entity.position);
-    }
+
 
 
 
@@ -422,30 +209,7 @@ public final class Functions {
 
 
 
-    public static void parseEntity(WorldModel world, String line, ImageStore imageStore) {
-        String[] properties = line.split(" ", Functions.ENTITY_NUM_PROPERTIES + 1);
-        if (properties.length >= Functions.ENTITY_NUM_PROPERTIES) {
-            String key = properties[PROPERTY_KEY];
-            String id = properties[Functions.PROPERTY_ID];
-            Point pt = new Point(Integer.parseInt(properties[Functions.PROPERTY_COL]), Integer.parseInt(properties[Functions.PROPERTY_ROW]));
 
-            properties = properties.length == Functions.ENTITY_NUM_PROPERTIES ?
-                    new String[0] : properties[Functions.ENTITY_NUM_PROPERTIES].split(" ");
-
-            switch (key) {
-                case Functions.OBSTACLE_KEY -> Functions.parseObstacle(world, properties, pt, id, imageStore);
-                case Functions.DUDE_KEY -> Functions.parseDude(world, properties, pt, id, imageStore);
-                case Functions.FAIRY_KEY -> Functions.parseFairy(world, properties, pt, id, imageStore);
-                case Functions.HOUSE_KEY -> Functions.parseHouse(world, properties, pt, id, imageStore);
-                case Functions.TREE_KEY -> Functions.parseTree(world, properties, pt, id, imageStore);
-                case Functions.SAPLING_KEY -> Functions.parseSapling(world, properties, pt, id, imageStore);
-                case Functions.STUMP_KEY -> Functions.parseStump(world, properties, pt, id, imageStore);
-                default -> throw new IllegalArgumentException("Entity key is unknown");
-            }
-        }else{
-            throw new IllegalArgumentException("Entity must be formatted as [key] [id] [x] [y] ...");
-        }
-    }
 
     public static PImage getCurrentImage(Object object) {
         if (object instanceof Background background) {
@@ -506,11 +270,15 @@ public final class Functions {
 
 
     public static Optional<PImage> getBackgroundImage(WorldModel world, Point pos) {
-        if (withinBounds(world, pos)) {
+        if (world.withinBounds(pos)) {
             return Optional.of(getCurrentImage(world.getBackgroundCell(pos)));
         } else {
             return Optional.empty();
         }
+    }
+
+    public static boolean isOccupied(WorldModel world, Point pos) {
+        return world.withinBounds( pos) && world.getOccupancyCell(pos) != null;
     }
 
 

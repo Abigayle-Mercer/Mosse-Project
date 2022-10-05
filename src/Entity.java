@@ -61,15 +61,15 @@ public final class Entity {
     }
 
     public void executeDudeNotFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> target = Functions.findNearest(world, this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
+        Optional<Entity> target = world.findNearest( this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
 
-        if (target.isEmpty() || !Functions.moveToNotFull(this, world, target.get(), scheduler) || !transformNotFull(world, scheduler, imageStore)) {
+        if (target.isEmpty() || !this.moveToNotFull( world, target.get(), scheduler) || !transformNotFull(world, scheduler, imageStore)) {
             scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
         }
     }
 
     public void executeDudeFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> fullTarget = Functions.findNearest(world, this.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
+        Optional<Entity> fullTarget = world.findNearest(this.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
 
         if (fullTarget.isPresent() && this.moveToFull(world, fullTarget.get(), scheduler)) {
             transformFull(world, scheduler, imageStore);
@@ -79,13 +79,13 @@ public final class Entity {
     }
 
     public boolean moveToFull(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (Functions.adjacent(this.position, target.position)) {
+        if (this.position.adjacent(target.position)) {
             return true;
         } else {
-            Point nextPos = Functions.nextPositionDude(this, world, target.position);
+            Point nextPos = this.nextPositionDude( world, target.position);
 
             if (!this.position.equals(nextPos)) {
-                Functions.moveEntity(world, scheduler, this, nextPos);
+                this.moveEntity(world, scheduler, nextPos);
             }
             return false;
         }
@@ -94,10 +94,10 @@ public final class Entity {
     public void transformFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         Entity dude = Functions.createDudeNotFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
 
-        Functions.removeEntity(world, scheduler, this);
+        removeEntity(world, scheduler);
 
-        world.addEntity(dude);
-        Functions.scheduleActions(dude, scheduler, world, imageStore);
+        dude.addEntity(world);
+        dude.scheduleActions(scheduler, world, imageStore);
     }
 
 
@@ -119,11 +119,11 @@ public final class Entity {
         if (this.resourceCount >= this.resourceLimit) {
             Entity dude = Functions.createDudeFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
 
-            Functions.removeEntity(world, scheduler, this);
+            removeEntity(world, scheduler);
             scheduler.unscheduleAllEvents(this);
 
-            world.addEntity(dude);
-            Functions.scheduleActions(dude, scheduler, world, imageStore);
+            dude.addEntity(world);
+            dude.scheduleActions(scheduler, world, imageStore);
 
             return true;
         }
@@ -145,9 +145,9 @@ public final class Entity {
         if (this.health <= 0) {
             Entity stump = Functions.createStump(Functions.STUMP_KEY + "_" + this.id, this.position, imageStore.getImageList(Functions.STUMP_KEY));
 
-            Functions.removeEntity(world, scheduler, this);
+            removeEntity(world, scheduler);
 
-            world.addEntity(stump);
+            stump.addEntity(world);
 
             return true;
         }
@@ -160,18 +160,18 @@ public final class Entity {
         if (this.health <= 0) {
             Entity stump = Functions.createStump(Functions.STUMP_KEY + "_" + this.id, this.position, imageStore.getImageList(Functions.STUMP_KEY));
 
-            Functions.removeEntity(world, scheduler, this);
+            removeEntity(world, scheduler);
 
-            world.addEntity(stump);
+            stump.addEntity(world);
 
             return true;
         } else if (this.health >= this.healthLimit) {
             Entity tree = Functions.createTree(Functions.TREE_KEY + "_" + this.id, this.position, Functions.getNumFromRange(Functions.TREE_ACTION_MAX, Functions.TREE_ACTION_MIN), Functions.getNumFromRange(Functions.TREE_ANIMATION_MAX, Functions.TREE_ANIMATION_MIN), Functions.getIntFromRange(Functions.TREE_HEALTH_MAX, Functions.TREE_HEALTH_MIN), imageStore.getImageList(Functions.TREE_KEY));
 
-            Functions.removeEntity(world, scheduler, this);
+            removeEntity(world, scheduler);
 
-            world.addEntity(tree);
-            Functions.scheduleActions(tree, scheduler, world, imageStore);
+            tree.addEntity(world);
+            tree.scheduleActions(scheduler, world, imageStore);
 
             return true;
         }
@@ -180,7 +180,154 @@ public final class Entity {
     }
 
 
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        switch (this.kind) {
+            case DUDE_FULL:
+                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                break;
 
+            case DUDE_NOT_FULL:
+                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                break;
+
+            case OBSTACLE:
+                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                break;
+
+            case FAIRY:
+                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                break;
+
+            case SAPLING:
+                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                break;
+
+            case TREE:
+                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                break;
+
+            default:
+        }
+    }
+
+    public void moveEntity(WorldModel world, EventScheduler scheduler, Point pos) {
+        Point oldPos = this.position;
+        if (world.withinBounds(pos) && !pos.equals(oldPos)) {
+            world.setOccupancyCell(oldPos, null);
+            Optional<Entity> occupant = world.getOccupant(pos);
+            occupant.ifPresent(target -> removeEntity(world, scheduler));
+            world.setOccupancyCell(pos, this);
+            this.position = pos;
+        }
+    }
+
+
+    public Point nextPositionFairy( WorldModel world, Point destPos) {
+        int horiz = Integer.signum(destPos.x - this.position.x);
+        Point newPos = new Point(this.position.x + horiz, this.position.y);
+
+        if (horiz == 0 || Functions.isOccupied(world, newPos)) {
+            int vert = Integer.signum(destPos.y - this.position.y);
+            newPos = new Point(this.position.x, this.position.y + vert);
+
+            if (vert == 0 || Functions.isOccupied(world, newPos)) {
+                newPos = this.position;
+            }
+        }
+
+        return newPos;
+    }
+
+
+    public boolean moveToFairy(WorldModel world, Entity target, EventScheduler scheduler) {
+        if (this.position.adjacent(target.position)) {
+            removeEntity(world, scheduler);
+            return true;
+        } else {
+            Point nextPos = this.nextPositionFairy(world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                this.moveEntity(world, scheduler, nextPos);
+            }
+            return false;
+        }
+    }
+
+    public void removeEntity(WorldModel world, EventScheduler scheduler) {
+        scheduler.unscheduleAllEvents(this);
+        world.removeEntityAt(this.position);
+    }
+
+    public void addEntity(WorldModel world) {
+        if (world.withinBounds(this.position)) {
+            world.setOccupancyCell(this.position, this);
+            world.entities.add(this);
+        }
+    }
+
+    public void executeFairyActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> fairyTarget = world.findNearest(this.position, new ArrayList<>(List.of(EntityKind.STUMP)));
+
+        if (fairyTarget.isPresent()) {
+            Point tgtPos = fairyTarget.get().position;
+
+            if (this.moveToFairy(world, fairyTarget.get(), scheduler)) {
+
+                Entity sapling = Functions.createSapling(Functions.SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos, imageStore.getImageList(Functions.SAPLING_KEY), 0);
+
+                sapling.addEntity(world);
+                sapling.scheduleActions(scheduler, world, imageStore);
+            }
+        }
+
+        scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+    }
+
+    public void tryAddEntity(WorldModel world) {
+        if (Functions.isOccupied(world, this.position)) {
+            // arguably the wrong type of exception, but we are not
+            // defining our own exceptions yet
+            throw new IllegalArgumentException("position occupied");
+        }
+
+        this.addEntity(world);
+    }
+
+    public Point nextPositionDude(WorldModel world, Point destPos) {
+        int horiz = Integer.signum(destPos.x - this.position.x);
+        Point newPos = new Point(this.position.x + horiz, this.position.y);
+
+        if (horiz == 0 || Functions.isOccupied(world, newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
+            int vert = Integer.signum(destPos.y - this.position.y);
+            newPos = new Point(this.position.x, this.position.y + vert);
+
+            if (vert == 0 || Functions.isOccupied(world, newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
+                newPos = this.position;
+            }
+        }
+
+        return newPos;
+    }
+
+    public boolean moveToNotFull(WorldModel world, Entity target, EventScheduler scheduler) {
+        if (this.position.adjacent(target.position)) {
+            this.resourceCount += 1;
+            target.health--;
+            return true;
+        } else {
+            Point nextPos = this.nextPositionDude(world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                this.moveEntity(world, scheduler, nextPos);
+            }
+            return false;
+        }
+    }
 
 
 

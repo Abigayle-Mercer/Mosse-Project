@@ -15,7 +15,7 @@ public final class VirtualWorld extends PApplet {
     public static final int VIEW_COLS = VIEW_WIDTH / TILE_WIDTH;
     public static final int VIEW_ROWS = VIEW_HEIGHT / TILE_HEIGHT;
 
-    public static final String IMAGE_LIST_FILE_NAME = "imagelist";
+    public static final String IMAGE_LIST_FILE_NAME = "image_list";
     public static final String DEFAULT_IMAGE_NAME = "background_default";
     public static final int DEFAULT_IMAGE_COLOR = 0x808080;
 
@@ -45,18 +45,18 @@ public final class VirtualWorld extends PApplet {
     public void setup() {
         parseCommandLine(ARGS);
         loadImages(IMAGE_LIST_FILE_NAME);
-        loadWorld(loadFile, this.imageStore);
+        loadWorld(loadFile, imageStore);
 
-        this.view = new WorldView(VIEW_ROWS, VIEW_COLS, this, world, TILE_WIDTH, TILE_HEIGHT);
-        this.scheduler = new EventScheduler();
-        this.startTimeMillis = System.currentTimeMillis();
-        this.scheduleActions(world, scheduler, imageStore);
+        view = new WorldView(VIEW_ROWS, VIEW_COLS, this, world, TILE_WIDTH, TILE_HEIGHT);
+        scheduler = new EventScheduler();
+        startTimeMillis = System.currentTimeMillis();
+        world.scheduleActions(scheduler, imageStore);
     }
 
     public void draw() {
         double appTime = (System.currentTimeMillis() - startTimeMillis) * 0.001;
         double frameTime = (appTime - scheduler.currentTime)/timeScale;
-        this.update(frameTime);
+        update(frameTime);
         view.drawViewport();
     }
 
@@ -79,11 +79,7 @@ public final class VirtualWorld extends PApplet {
 
     }
 
-    public void scheduleActions(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        for (Entity entity : world.entities) {
-            Functions.scheduleActions(entity, scheduler, world, imageStore);
-        }
-    }
+
 
     private Point mouseToPoint() {
         return view.viewport.viewportToWorld(mouseX / TILE_WIDTH, mouseY / TILE_HEIGHT);
@@ -117,7 +113,7 @@ public final class VirtualWorld extends PApplet {
     }
 
     public void loadImages(String filename) {
-        this.imageStore = new ImageStore(createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
+        imageStore = new ImageStore(createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
         try {
             Scanner in = new Scanner(new File(filename));
             imageStore.loadImages(in,this);
@@ -147,13 +143,13 @@ public final class VirtualWorld extends PApplet {
             }
         }
     }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) { // DID I PUT THIS HERE????
         VirtualWorld.ARGS = args;
         PApplet.main(VirtualWorld.class);
     }
 
-    public static List<String> headlessMain(String[] args, double lifetime){
+
+    public static List<String> headlessMain(String[] args, double lifetime){ // DID I PUT THIS HERE??
         VirtualWorld.ARGS = args;
 
         VirtualWorld virtualWorld = new VirtualWorld();

@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * An event is made up of an Entity that is taking an
  * Action a specified time.
@@ -12,6 +14,15 @@ public final class Event {
         this.time = time;
         this.entity = entity;
     }
+
+    public void removePendingEvent(EventScheduler eventScheduler) {
+        List<Event> pending = eventScheduler.pendingEvents.get(this.entity);
+
+        if (pending != null) {
+            pending.remove(this);
+        }
+    }
+
 
 
 }

@@ -48,15 +48,12 @@ public final class WorldView {
     }
 
     public void shiftView(int colDelta, int rowDelta) {
-        int newCol = clamp(this.viewport.col + colDelta, 0, this.world.numCols - this.viewport.numCols);
-        int newRow = clamp(this.viewport.row + rowDelta, 0, this.world.numRows - this.viewport.numRows);
+        int newCol = Functions.clamp(this.viewport.col + colDelta, 0, this.world.numCols - this.viewport.numCols);
+        int newRow = Functions.clamp(this.viewport.row + rowDelta, 0, this.world.numRows - this.viewport.numRows);
 
         this.viewport.shift(newCol, newRow);
     }
 
-    public int clamp(int value, int low, int high) {
-        return Math.min(high, Math.max(value, low));
-    }
 
 
 
