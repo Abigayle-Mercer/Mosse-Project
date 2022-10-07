@@ -15,5 +15,9 @@ public final class Background {
         this.images = images;
     }
 
+    public PImage getCurrentImage() { // Turn into two overloaded methods
+        return this.images.get(this.imageIndex);
+    }
+
 
 }

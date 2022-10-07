@@ -7,53 +7,99 @@ executeActivityAction - moved from Functions, Action was in the name and there w
 data specific to the action class (cohesion)
 
 Background:
+getCurrentImage - okay honestly I knew I had to put something in this class but I wasn't sure what but
+then I realized I could overload getCurrentImage by splitting it into two methods and this one just takes
+a background object as its paramter so it made perfect sense to put this one in Background because it only
+accesses background data (cohesion)
 
 Entity:
 nextImage - moved from Functions, only referenced entity class data (cohesion) and this allowed the function
 to take no parameters
+
 executeSaplingActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
+
 executeTreeActivity- moved from Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
+
 executeDudeNotFullActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
+
 executeDudeFullActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
+
 moveToFull - moved from Functions, multiple references to entity class data (cohesion)
+
 transformFull - moved from Functions, only references entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
+
+
 getAnimationPeriod - moved from Functions, deals exclusively with entity class data (cohesion)
+
 transformNotFull - moved from Functions, deals exclusively with entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
+
 transformPlant - moved from Functions, multiple references to entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
+
 transformTree - moved from Functions, multiple references to entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
+
 transformSapling - moved from Functions, multiple references to entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
+
 scheduleActions - moved from Functions, this one was conflicting because the name makes it sound like it should go
 in the eventscheduler, but it only called event scheduler method, whereas it referenced entity specific data
+
 moveEntity - moved from Functions, exclusively makes references to entity specific data and it makes sense
 that entities could move themselves
-nextPositionFadouiry - moved from Functions, this one was tricky, it makese reference to entity specific data but
+
+nextPositionFairy - moved from Functions, this one was tricky, it makese reference to entity specific data but
 part of that data is a point so it makes reference to point specific data (x, y). Ultimately i decided that the point
 really didn't need access to entity data, in terms of heirarchy i would put it lower than entity.
+
 moveToFairy - moved from Functions, exclusively makes references to entity specific data and it makes sense
 that entities could move themselves
+
 removeEntity - moved from Functions, makes one reference to entity specific data, i guess it makes sense that
 entities could remove themselves
-addEntity - moved from Functions, deals with data specfic to both WorldModel and Entity, but for world it references
-data to use a method to change it, and there are more calls to Entity data, but grammatically I don't like it
+
 executeFairyActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
+
 tryAddEntity - moved from Functions, deals exclusively with entity class data (cohesion)
+
 nextPositionDude - moved from functions, references both entity and point class data, in terms of heirarchy
 point doesn't need access to entity data
+
 moveToNotFull - moved from functions, references two entity objects data, (cohesion)
+
+getCurrentImage - moved from functions, this function originally part of another function that i split into two and
+overloaded so that this getCurrentImage method only takes in entity objects and only deals with entity data
+
+createAnimationAction - takes in one entity object and an integer so it might as well go in entity, theres no
+integer class to put it into. Even though it doesn't really access entity data or methods, it removes atleast
+one of the parameters so its more readable when calling, no need for Functions.
+
+createActivityAction - I thought about putting this in world, since entity doesn't rely on world objects why should
+I put a method in here that calls it. But, while it doesn't access entity data or methods, it doesn't access
+world methods or data either. Ultimately it came down to the fact that this method is only used in the entity class
+so, why make more work for myself and have to call it from another class when it could stay in entity and only
+be used in entity, (cohesion)
+
+adjacent - only used in this file, even though it accesses point data its only used here and point is lower in
+data heirarchy also it looks like we aren't allowed to put methods in point
+
+createDudeFull - only used in this file
+
+getIntFromRange - only used in this file
+
+getNumFromRange - only used in this file
+
 
 Event:
 removePendingEvent - I saw that I had to put something in the Event class and this was the only function that
-referenced Event data specifically, even though it also accesses EventScheduler data,
+referenced Event data specifically, even though it also accesses EventScheduler data, gotta put it somehwere
 
 EventScheduler:
 scheduleEvent - moved from Functions, well its in the name, and it exclusively deals with EventScheduler data
@@ -65,12 +111,11 @@ double parameter rather than a class
 ImageStore:
 getImageList - moved from Functions, its in the name and deals exclusively with ImageStore data
 loadImages - moved from Functions, its in the name and only makes one reference to ImageStore data
+processImageLine - only used in this file
+setAlpha - only used in this file
+getImages - only used in this file
 
 Point:
-distanceSquared - moved from Functions, I thought a lot about this one, because it deals with two instances
-of the Point class, I almost felt like it shouldn't be in the Point class at all. But it only deals with point
-class data so I guess you could call it on a point with another one.
-adjacent - moved from Functions, same reasoning as distance squared ^
 
 Viewport:
 contains - moved from Functions, this function deals with data from both Point and Viewport, so for me it came down
@@ -79,71 +124,122 @@ grammatical sense to me.
 shift - moved from Functions, deals exclusively with Viewport specific data, now it only takes two ints
 worldToViewport - moved from Functions, its in the name and it only deals with ViewPort specif data  (cohesion)
 viewportToWorld - moved from Functions, its in the name and it only deals with ViewPort specif data  (cohesion)
+update - onlu used in this file
+
 
 VirtualWorld:
-draw - moved from Functions, deals mostly with it's own class data, except when referencing class data that's another
-class with it's own data
-update - moved from Functions, deals with it's own data and only takes one double parameter
-mousePressed - not too sure about this one, it accesses entity data but that wasn't a paremter, it was initialiazed in
-the body, so if it was in entity it wouldn't use 'this'. The name was the biggest clue for me.
-mouseToPoint - moved from Functions, only deals with VirtualWorld data (cohesion)
-keyPressed - moved from Functions, only deals with VirtualWorld data (cohesion)
-Background - moved from Functions, deals with VirtualWorld data, although it sounds like it would go in Background,
-it initialiazes a background wich is Background method, which takes lower precedence than data
-createImageColored - moved from Functions, wasn't too sure on this one, but ultimately the only paramter that was
-an object was VirtualWorld, the rest are Integers. Also it does use VirtualWorld data (cohesion)
-loadImages - moved from Functions, uses VirtualWorld data (cohesion)
-loadWorld - moved from Functions, uses VirtualWorld data (cohesion)
-parseCommandLine - moved from Functions, uses VirtualWorld data (cohesion)
-main ??
-headlessMain??
 
 
 
 WorldModel:
-scheduleActions - initially i put this in VirtualWorld since it's only used there, but it makes a referecen to
-WorldModel specific data that I don't think VirtualWorld needs access to
+
 getOccupancyCell - references both point and worldmodel data but it makese sense that point shouldn't have access
 to WorldModel data
+
 setOccupancyCell - references both point and worldmodel data but it makese sense that point shouldn't have access
 to WorldModel data
+
 parseBackgroundRow - only makese references to WorldModel data
+
 setBackgroundCell - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel data
+to WorldModel data. Now it does look like background data might be access but honestly there's no method in backgorund
+that specifies what to return if it's passed two points in brackets so I didn't want to assume background
+data was being meddled with here.
+
 getBackgroundCell - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel data
+to WorldModel dataNow it does look like background data might be access but honestly there's no method in backgorund
+that specifies what to return if it's passed two points in brackets so I didn't want to assume background
+data was being meddled with here.
+
 parseSaveFile - only makes references to WorldModel data (cohesion)
+
 load - only makes references to WorldModel data (cohesion)
+
 getOccupant - this method takes both Point and WorldModel as paremeters, and doesn't really access the data of either,
-just WorldModels data. Could really go in either one but I liked how WorldModel.getOccupant(point) works in terms of
-readability
+just WorldModels methods, due to the heriarchy of these classes, point shouldn't concern itself with worldmodel methods.
+
 withinBounds - references both point and worldmodel data but it makese sense that point shouldn't have access
 to WorldModel data
+
 scheduleActions - only references WorldModel data once
+
 findNearest - wasn't really sure on this one, calls both entity and worldmodel specific data but putting it in
 Worldview removes need for one paramter whereas putting it in entity woulnd't because it creates the entity in
 the body of the method
+
 parseSapling - It wasn't very obvious where to put the parse functions, I just decided that
 because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseDude - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseFairy - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseTree - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseObstacle - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseHouse - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseStump - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 parseEntity - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
 that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+
 removeEntityAt - I was conflicted on this method because it calls class specific data from both world and entity
 but ultimately I realized that the worldModel class relies on entity, not the other way around, so entity doesn't
 need access to worldModel data as much as worldModel
 
-WorldView:
-shiftView - contains multiple references to WorldView specific data (cohesion)
+getBackgroundImage - didn't access data to either, but world has higher heirarchy and it does access world
+methods so
 
+isOccupied - takes in a worldmodel and point object, but uses worldmodel methods so due to the heriarchy of
+these classes it makes sense that point shouldn't concern itself with worldmodel methods.
+
+addEntity - moved from Functions, deals with data specfic to both WorldModel and Entity, but worldmodel relies
+entity, not the other way around, so the lesser of two evils is for world to access entity data rather than
+entity to access world data.
+
+createFairy - only used in this file, though it doesn't actually deal with entity data, it'll make my code
+more readable to put it in this file (no .Functions)
+
+createObstacle - only used in this file
+
+createHouse - only used in this file
+
+nearestEntity - only used in this file
+
+distanceSquared - only used in this file
+
+
+WorldView:
+shiftView - contains multiple references to WorldView specific data (cohesion) while it does call upon viewport
+data and methods as well, worldView relys on viewPort, not the other way around, so viewport shouldn't concern
+itself with worldView data.
+
+clamp - though this function only takes in integers, its only used in this file so it will make my code more readable
+to put it in here
+
+drawBackground - acceses worldview specific data
+
+entities - acceses worldview specific data
+
+Functions:
+createTree - this function is used in two different files, but doesn't actually access data thats specfific to those class
+objects, so both files deserve equal access to it
+
+
+createStump - this function is used in two different files, but doesn't actually access data thats specfific to those class
+objects, so both files deserve equal access to it
+
+createSapling - this function is used in two different files, but doesn't actually access data thats specfific to those class
+objects, so both files deserve equal access to it
+
+createDudeNotFull - this function is used in two different files, but doesn't actually access data thats specfific to those class
+objects, so both files deserve equal access to it

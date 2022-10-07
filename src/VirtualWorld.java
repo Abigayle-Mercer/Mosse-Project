@@ -15,10 +15,9 @@ public final class VirtualWorld extends PApplet {
     public static final int VIEW_COLS = VIEW_WIDTH / TILE_WIDTH;
     public static final int VIEW_ROWS = VIEW_HEIGHT / TILE_HEIGHT;
 
-    public static final String IMAGE_LIST_FILE_NAME = "image_list";
+    public static final String IMAGE_LIST_FILE_NAME = "imagelist";
     public static final String DEFAULT_IMAGE_NAME = "background_default";
     public static final int DEFAULT_IMAGE_COLOR = 0x808080;
-
     public static final String FAST_FLAG = "-fast";
     public static final String FASTER_FLAG = "-faster";
     public static final String FASTEST_FLAG = "-fastest";

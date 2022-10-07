@@ -7,6 +7,15 @@ import processing.core.PImage;
  * different kinds of entities that exist.
  */
 public final class Entity {
+    private static final double TREE_ANIMATION_MAX = 0.600;
+    private static final double TREE_ANIMATION_MIN = 0.050;
+    private static final double TREE_ACTION_MAX = 1.400;
+    private static final double TREE_ACTION_MIN = 1.000;
+
+
+    private static final int TREE_HEALTH_MAX = 3;
+
+    private static final int TREE_HEALTH_MIN = 1;
     public EntityKind kind;
     public String id;
     public Point position;
@@ -48,7 +57,7 @@ public final class Entity {
     public void executeSaplingActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         this.health++;
         if (!transformPlant(world, scheduler, imageStore)) {
-            scheduler.scheduleEvent( this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+            scheduler.scheduleEvent( this, createActivityAction( world, imageStore), this.actionPeriod);
         }
     }
 
@@ -56,7 +65,7 @@ public final class Entity {
 
         if (!transformPlant(world, scheduler, imageStore)) {
 
-            scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
         }
     }
 
@@ -64,7 +73,7 @@ public final class Entity {
         Optional<Entity> target = world.findNearest( this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
 
         if (target.isEmpty() || !this.moveToNotFull( world, target.get(), scheduler) || !transformNotFull(world, scheduler, imageStore)) {
-            scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
         }
     }
 
@@ -74,12 +83,12 @@ public final class Entity {
         if (fullTarget.isPresent() && this.moveToFull(world, fullTarget.get(), scheduler)) {
             transformFull(world, scheduler, imageStore);
         } else {
-            scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+            scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
         }
     }
 
     public boolean moveToFull(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (this.position.adjacent(target.position)) {
+        if (adjacent(this.position, target.position)) {
             return true;
         } else {
             Point nextPos = this.nextPositionDude( world, target.position);
@@ -96,7 +105,7 @@ public final class Entity {
 
         removeEntity(world, scheduler);
 
-        dude.addEntity(world);
+        world.addEntity(dude);
         dude.scheduleActions(scheduler, world, imageStore);
     }
 
@@ -117,12 +126,12 @@ public final class Entity {
 
     public boolean transformNotFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         if (this.resourceCount >= this.resourceLimit) {
-            Entity dude = Functions.createDudeFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
+            Entity dude = createDudeFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
 
             removeEntity(world, scheduler);
             scheduler.unscheduleAllEvents(this);
 
-            dude.addEntity(world);
+            world.addEntity(dude);
             dude.scheduleActions(scheduler, world, imageStore);
 
             return true;
@@ -145,9 +154,9 @@ public final class Entity {
         if (this.health <= 0) {
             Entity stump = Functions.createStump(Functions.STUMP_KEY + "_" + this.id, this.position, imageStore.getImageList(Functions.STUMP_KEY));
 
-            removeEntity(world, scheduler);
+            stump.removeEntity(world, scheduler);
 
-            stump.addEntity(world);
+            world.addEntity(stump);
 
             return true;
         }
@@ -160,17 +169,17 @@ public final class Entity {
         if (this.health <= 0) {
             Entity stump = Functions.createStump(Functions.STUMP_KEY + "_" + this.id, this.position, imageStore.getImageList(Functions.STUMP_KEY));
 
-            removeEntity(world, scheduler);
+            this.removeEntity(world, scheduler);
 
-            stump.addEntity(world);
+            world.addEntity(stump);
 
             return true;
         } else if (this.health >= this.healthLimit) {
-            Entity tree = Functions.createTree(Functions.TREE_KEY + "_" + this.id, this.position, Functions.getNumFromRange(Functions.TREE_ACTION_MAX, Functions.TREE_ACTION_MIN), Functions.getNumFromRange(Functions.TREE_ANIMATION_MAX, Functions.TREE_ANIMATION_MIN), Functions.getIntFromRange(Functions.TREE_HEALTH_MAX, Functions.TREE_HEALTH_MIN), imageStore.getImageList(Functions.TREE_KEY));
+            Entity tree = Functions.createTree(Functions.TREE_KEY + "_" + this.id, this.position, getNumFromRange(TREE_ACTION_MAX, TREE_ACTION_MIN), getNumFromRange(TREE_ANIMATION_MAX, TREE_ANIMATION_MIN), getIntFromRange(TREE_HEALTH_MAX, TREE_HEALTH_MIN), imageStore.getImageList(Functions.TREE_KEY));
 
-            removeEntity(world, scheduler);
+            this.removeEntity(world, scheduler);
 
-            tree.addEntity(world);
+            world.addEntity(tree);
             tree.scheduleActions(scheduler, world, imageStore);
 
             return true;
@@ -183,32 +192,32 @@ public final class Entity {
     public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
         switch (this.kind) {
             case DUDE_FULL:
-                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
                 break;
 
             case DUDE_NOT_FULL:
-                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
                 break;
 
             case OBSTACLE:
-                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
                 break;
 
             case FAIRY:
-                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
                 break;
 
             case SAPLING:
-                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
                 break;
 
             case TREE:
-                scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, Functions.createAnimationAction(this, 0), this.getAnimationPeriod());
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
                 break;
 
             default:
@@ -220,7 +229,7 @@ public final class Entity {
         if (world.withinBounds(pos) && !pos.equals(oldPos)) {
             world.setOccupancyCell(oldPos, null);
             Optional<Entity> occupant = world.getOccupant(pos);
-            occupant.ifPresent(target -> removeEntity(world, scheduler));
+            occupant.ifPresent(target -> target.removeEntity(world, scheduler));
             world.setOccupancyCell(pos, this);
             this.position = pos;
         }
@@ -231,11 +240,11 @@ public final class Entity {
         int horiz = Integer.signum(destPos.x - this.position.x);
         Point newPos = new Point(this.position.x + horiz, this.position.y);
 
-        if (horiz == 0 || Functions.isOccupied(world, newPos)) {
+        if (horiz == 0 || world.isOccupied( newPos)) {
             int vert = Integer.signum(destPos.y - this.position.y);
             newPos = new Point(this.position.x, this.position.y + vert);
 
-            if (vert == 0 || Functions.isOccupied(world, newPos)) {
+            if (vert == 0 || world.isOccupied(newPos)) {
                 newPos = this.position;
             }
         }
@@ -245,8 +254,8 @@ public final class Entity {
 
 
     public boolean moveToFairy(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (this.position.adjacent(target.position)) {
-            removeEntity(world, scheduler);
+        if (adjacent(this.position, target.position)) {
+            target.removeEntity(world, scheduler);
             return true;
         } else {
             Point nextPos = this.nextPositionFairy(world, target.position);
@@ -263,12 +272,7 @@ public final class Entity {
         world.removeEntityAt(this.position);
     }
 
-    public void addEntity(WorldModel world) {
-        if (world.withinBounds(this.position)) {
-            world.setOccupancyCell(this.position, this);
-            world.entities.add(this);
-        }
-    }
+
 
     public void executeFairyActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity> fairyTarget = world.findNearest(this.position, new ArrayList<>(List.of(EntityKind.STUMP)));
@@ -280,33 +284,33 @@ public final class Entity {
 
                 Entity sapling = Functions.createSapling(Functions.SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos, imageStore.getImageList(Functions.SAPLING_KEY), 0);
 
-                sapling.addEntity(world);
+                world.addEntity(sapling);
                 sapling.scheduleActions(scheduler, world, imageStore);
             }
         }
 
-        scheduler.scheduleEvent(this, Functions.createActivityAction(this, world, imageStore), this.actionPeriod);
+        scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
     }
 
     public void tryAddEntity(WorldModel world) {
-        if (Functions.isOccupied(world, this.position)) {
+        if (world.isOccupied(this.position)) {
             // arguably the wrong type of exception, but we are not
             // defining our own exceptions yet
             throw new IllegalArgumentException("position occupied");
         }
 
-        this.addEntity(world);
+        world.addEntity(this);
     }
 
     public Point nextPositionDude(WorldModel world, Point destPos) {
         int horiz = Integer.signum(destPos.x - this.position.x);
         Point newPos = new Point(this.position.x + horiz, this.position.y);
 
-        if (horiz == 0 || Functions.isOccupied(world, newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
+        if (horiz == 0 || world.isOccupied( newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
             int vert = Integer.signum(destPos.y - this.position.y);
             newPos = new Point(this.position.x, this.position.y + vert);
 
-            if (vert == 0 || Functions.isOccupied(world, newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
+            if (vert == 0 || world.isOccupied( newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
                 newPos = this.position;
             }
         }
@@ -315,7 +319,7 @@ public final class Entity {
     }
 
     public boolean moveToNotFull(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (this.position.adjacent(target.position)) {
+        if (adjacent(this.position, target.position)) {
             this.resourceCount += 1;
             target.health--;
             return true;
@@ -329,6 +333,37 @@ public final class Entity {
         }
     }
 
+    public PImage getCurrentImage() { // Turn into two overloaded methods
 
+        return this.images.get(this.imageIndex % this.images.size());
+
+    }
+
+    public Action createAnimationAction( int repeatCount) {
+        return new Action(ActionKind.ANIMATION, this, null, null, repeatCount);
+    }
+
+    public Action createActivityAction(WorldModel world, ImageStore imageStore) {
+        return new Action(ActionKind.ACTIVITY, this, world, imageStore, 0);
+    }
+
+
+    public boolean adjacent(Point p1, Point p2) { // STAY
+        return (p1.x == p2.x && Math.abs(p1.y - p2.y) == 1) || (p1.y == p2.y && Math.abs(p1.x - p2.x) == 1);
+    }
+
+    public Entity createDudeFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
+        return new Entity(EntityKind.DUDE_FULL, id, position, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
+    }
+
+    public int getIntFromRange(int max, int min) {
+        Random rand = new Random();
+        return min + rand.nextInt(max-min);
+    }
+
+    public double getNumFromRange(double max, double min) {
+        Random rand = new Random();
+        return min + rand.nextDouble() * (max - min);
+    }
 
 }
