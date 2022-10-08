@@ -16,17 +16,17 @@ public final class Entity {
     private static final int TREE_HEALTH_MAX = 3;
 
     private static final int TREE_HEALTH_MIN = 1;
-    public EntityKind kind;
-    public String id;
-    public Point position;
-    public List<PImage> images;
-    public int imageIndex;
-    public int resourceLimit;
-    public int resourceCount;
-    public double actionPeriod;
-    public double animationPeriod;
-    public int health;
-    public int healthLimit;
+    private final EntityKind kind;
+    private final String id;
+    private Point position;
+    private final List<PImage> images;
+    private int imageIndex;
+    private final int resourceLimit;
+    private int resourceCount;
+    private final double actionPeriod;
+    private final double animationPeriod;
+    private int health;
+    private final int healthLimit;
 
     public Entity(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
         this.kind = kind;
@@ -42,12 +42,33 @@ public final class Entity {
         this.healthLimit = healthLimit;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public EntityKind getKind() {
+        return kind;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
     /**
      * Helper method for testing. Preserve this functionality while refactoring.
      */
     public String log(){
         return this.id.isEmpty() ? null :
-                String.format("%s %d %d %d", this.id, this.position.x, this.position.y, this.imageIndex);
+                String.format("%s %d %d %d", this.id, this.position.getX(), this.position.getY(), this.imageIndex);
     }
 
     public void nextImage() {
@@ -237,12 +258,12 @@ public final class Entity {
 
 
     public Point nextPositionFairy( WorldModel world, Point destPos) {
-        int horiz = Integer.signum(destPos.x - this.position.x);
-        Point newPos = new Point(this.position.x + horiz, this.position.y);
+        int horiz = Integer.signum(destPos.getX() - this.position.getX());
+        Point newPos = new Point(this.position.getX() + horiz, this.position.getY());
 
         if (horiz == 0 || world.isOccupied( newPos)) {
-            int vert = Integer.signum(destPos.y - this.position.y);
-            newPos = new Point(this.position.x, this.position.y + vert);
+            int vert = Integer.signum(destPos.getY() - this.position.getY());
+            newPos = new Point(this.position.getX(), this.position.getY() + vert);
 
             if (vert == 0 || world.isOccupied(newPos)) {
                 newPos = this.position;
@@ -303,12 +324,12 @@ public final class Entity {
     }
 
     public Point nextPositionDude(WorldModel world, Point destPos) {
-        int horiz = Integer.signum(destPos.x - this.position.x);
-        Point newPos = new Point(this.position.x + horiz, this.position.y);
+        int horiz = Integer.signum(destPos.getX() - this.position.getX());
+        Point newPos = new Point(this.position.getX() + horiz, this.position.getY());
 
         if (horiz == 0 || world.isOccupied( newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
-            int vert = Integer.signum(destPos.y - this.position.y);
-            newPos = new Point(this.position.x, this.position.y + vert);
+            int vert = Integer.signum(destPos.getY() - this.position.getY());
+            newPos = new Point(this.position.getX(), this.position.getY() + vert);
 
             if (vert == 0 || world.isOccupied( newPos) && world.getOccupancyCell(newPos).kind != EntityKind.STUMP) {
                 newPos = this.position;
@@ -349,7 +370,7 @@ public final class Entity {
 
 
     public boolean adjacent(Point p1, Point p2) { // STAY
-        return (p1.x == p2.x && Math.abs(p1.y - p2.y) == 1) || (p1.y == p2.y && Math.abs(p1.x - p2.x) == 1);
+        return (p1.getX() == p2.getX() && Math.abs(p1.getY() - p2.getY()) == 1) || (p1.getY() == p2.getY() && Math.abs(p1.getX() - p2.getX()) == 1);
     }
 
     public Entity createDudeFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {

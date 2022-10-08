@@ -5,9 +5,9 @@ import java.util.List;
  * Action a specified time.
  */
 public final class Event {
-    public Action action;
-    public double time;
-    public Entity entity;
+    private final Action action;
+    private final double time;
+    private final Entity entity;
 
     public Event(Action action, double time, Entity entity) {
         this.action = action;
@@ -15,8 +15,16 @@ public final class Event {
         this.entity = entity;
     }
 
+    public Action getAction() {
+        return action;
+    }
+
+    public double getTime() {
+        return time;
+    }
+
     public void removePendingEvent(EventScheduler eventScheduler) {
-        List<Event> pending = eventScheduler.pendingEvents.get(this.entity);
+        List<Event> pending = eventScheduler.getPendingEvents().get(this.entity);
 
         if (pending != null) {
             pending.remove(this);

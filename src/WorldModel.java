@@ -40,14 +40,26 @@ public final class WorldModel {
 
     private static final int SAPLING_NUM_PROPERTIES = 1;
 
-    public int numRows;
-    public int numCols;
-    public Background[][] background;
-    public Entity[][] occupancy;
-    public Set<Entity> entities;
+    private int numRows;
+    private int numCols;
+    private Background[][] background;
+    private Entity[][] occupancy;
+    private Set<Entity> entities;
 
     public WorldModel() {
 
+    }
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public int getNumCols() {
+        return numCols;
+    }
+
+    public Set<Entity> getEntities() {
+        return entities;
     }
 
     /**
@@ -65,11 +77,11 @@ public final class WorldModel {
 
 
     public Entity getOccupancyCell(Point pos) {
-        return this.occupancy[pos.y][pos.x];
+        return this.occupancy[pos.getY()][pos.getX()];
     }
 
     public void setOccupancyCell(Point pos, Entity entity) {
-        this.occupancy[pos.y][pos.x] = entity;
+        this.occupancy[pos.getY()][pos.getX()] = entity;
     }
 
     public void parseBackgroundRow(String line, int row, ImageStore imageStore) {
@@ -83,11 +95,11 @@ public final class WorldModel {
     }
 
     public void setBackgroundCell(Point pos, Background background) {
-        this.background[pos.y][pos.x] = background;
+        this.background[pos.getY()][pos.getX()] = background;
     }
 
     public Background getBackgroundCell(Point pos) {
-        return this.background[pos.y][pos.x];
+        return this.background[pos.getY()][pos.getX()];
     }
 
 
@@ -144,7 +156,7 @@ public final class WorldModel {
 
 
     public boolean withinBounds(Point pos) {
-        return pos.y >= 0 && pos.y < this.numRows && pos.x >= 0 && pos.x < this.numCols;
+        return pos.getY() >= 0 && pos.getY() < this.numRows && pos.getX() >= 0 && pos.getX() < this.numCols;
     }
 
     public void scheduleActions(EventScheduler scheduler, ImageStore imageStore) {
@@ -157,7 +169,7 @@ public final class WorldModel {
         List<Entity> ofType = new LinkedList<>();
         for (EntityKind kind : kinds) {
             for (Entity entity : this.entities) {
-                if (entity.kind == kind) {
+                if (entity.getKind() == kind) {
                     ofType.add(entity);
                 }
             }
@@ -260,7 +272,7 @@ public final class WorldModel {
 
             /* This moves the entity just outside of the grid for
              * debugging purposes. */
-            entity.position = new Point(-1, -1);
+            entity.setPosition(new Point(-1, -1));
             this.entities.remove(entity);
             this.setOccupancyCell(pos, null);
         }
@@ -279,8 +291,8 @@ public final class WorldModel {
     }
 
     public void addEntity(Entity entity) {
-        if (this.withinBounds(entity.position)) {
-            this.setOccupancyCell(entity.position, entity);
+        if (this.withinBounds(entity.getPosition())) {
+            this.setOccupancyCell(entity.getPosition(), entity);
             this.entities.add(entity);
         }
     }
@@ -302,10 +314,10 @@ public final class WorldModel {
             return Optional.empty();
         } else {
             Entity nearest = entities.get(0);
-            int nearestDistance = distanceSquared(nearest.position, pos);
+            int nearestDistance = distanceSquared(nearest.getPosition(), pos);
 
             for (Entity other : entities) {
-                int otherDistance = distanceSquared(other.position, pos);
+                int otherDistance = distanceSquared(other.getPosition(), pos);
 
                 if (otherDistance < nearestDistance) {
                     nearest = other;
@@ -320,8 +332,8 @@ public final class WorldModel {
 
 
     public int distanceSquared(Point p1,Point p2) { // STAY
-        int deltaX = p1.x - p2.x;
-        int deltaY = p1.y - p2.y;
+        int deltaX = p1.getX() - p2.getX();
+        int deltaY = p1.getY() - p2.getY();
 
         return deltaX * deltaX + deltaY * deltaY;
     }

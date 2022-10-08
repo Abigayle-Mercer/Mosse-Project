@@ -12,8 +12,6 @@ public final class Functions {
 
     public static final Random rand = new Random();
 
-
-
     public static final List<String> PATH_KEYS = new ArrayList<>(Arrays.asList("bridge", "dirt", "dirt_horiz", "dirt_vert_left", "dirt_vert_right", "dirt_bot_left_corner", "dirt_bot_right_up", "dirt_vert_left_bot"));
     public static final double SAPLING_ACTION_ANIMATION_PERIOD = 1.000; // have to be in sync since grows and gains health at same time
     public static final int SAPLING_HEALTH_LIMIT = 5;
@@ -21,26 +19,10 @@ public final class Functions {
     public static final String SAPLING_KEY = "sapling";
     public static final String TREE_KEY = "tree";
 
-
-
-
-
-
-
-
-
-
-
  /*
        Assumes that there is no entity currently occupying the
        intended destination cell.
     */
-
-
-
-
-
-
 
 
     public static Entity createTree(String id, Point position, double actionPeriod, double animationPeriod, int health, List<PImage> images) {

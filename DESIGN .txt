@@ -1,10 +1,12 @@
 Action:
 executeAnimationAction - moved from Functions, Action was in the name as well as multiple references to
-Action specific data (cohesion)
-executeAction - moved from Functions, Action was in the name and data specific to the action class was
+Action specific data (cohesion), event scheduler is a parameter but only has method access
+
+executeAction - moved from Functions, Action was in the name and data/methods specific to the action class was
 referenced in the body (cohesion)
+
 executeActivityAction - moved from Functions, Action was in the name and there were many references to
-data specific to the action class (cohesion)
+data/methods specific to the action class (cohesion)
 
 Background:
 getCurrentImage - okay honestly I knew I had to put something in this class but I wasn't sure what but
@@ -70,7 +72,7 @@ sense that the entities would execute their own activities.
 tryAddEntity - moved from Functions, deals exclusively with entity class data (cohesion)
 
 nextPositionDude - moved from functions, references both entity and point class data, in terms of heirarchy
-point doesn't need access to entity data
+point doesn't need access to entity data; entity relys on point not the other way around
 
 moveToNotFull - moved from functions, references two entity objects data, (cohesion)
 
