@@ -245,3 +245,7 @@ objects, so both files deserve equal access to it
 
 createDudeNotFull - this function is used in two different files, but doesn't actually access data thats specfific to those class
 objects, so both files deserve equal access to it
+
+
+COPY THE ENTITY CLASS TO ALL 8 OF ITS SUBCLASSES. THEN SEE WHAT IS ALL THE SAME AND WHAT IS SPECIFIC TO CERTAIN CLASSES BASED
+ON WHERE AND HOW ITS USED.
