@@ -72,38 +72,7 @@ public final class Entity {
         this.imageIndex = this.imageIndex + 1;
     };
 
-    public void executeSaplingActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        this.health++;
-        if (!transformPlant(world, scheduler, imageStore)) {
-            scheduler.scheduleEvent( this, createActivityAction( world, imageStore), this.actionPeriod);
-        }
-    }
 
-    public void executeTreeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-
-        if (!transformPlant(world, scheduler, imageStore)) {
-
-            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
-        }
-    }
-
-    public void executeDudeNotFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> target = world.findNearest( this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
-
-        if (target.isEmpty() || !this.moveToNotFull( world, target.get(), scheduler) || !transformNotFull(world, scheduler, imageStore)) {
-            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
-        }
-    }
-
-    public void executeDudeFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> fullTarget = world.findNearest(this.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
-
-        if (fullTarget.isPresent() && this.moveToFull(world, fullTarget.get(), scheduler)) {
-            transformFull(world, scheduler, imageStore);
-        } else {
-            scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
-        }
-    }
 
     public boolean moveToFull(WorldModel world, Entity target, EventScheduler scheduler) {
         if (adjacent(this.position, target.position)) {
@@ -313,6 +282,39 @@ public final class Entity {
         }
 
         scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+    }
+
+    public void executeSaplingActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        this.health++;
+        if (!transformPlant(world, scheduler, imageStore)) {
+            scheduler.scheduleEvent( this, createActivityAction( world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public void executeTreeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+
+        if (!transformPlant(world, scheduler, imageStore)) {
+
+            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public void executeDudeNotFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> target = world.findNearest( this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
+
+        if (target.isEmpty() || !this.moveToNotFull( world, target.get(), scheduler) || !transformNotFull(world, scheduler, imageStore)) {
+            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+        }
+    }
+
+    public void executeDudeFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> fullTarget = world.findNearest(this.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
+
+        if (fullTarget.isPresent() && this.moveToFull(world, fullTarget.get(), scheduler)) {
+            transformFull(world, scheduler, imageStore);
+        } else {
+            scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+        }
     }
 
 
