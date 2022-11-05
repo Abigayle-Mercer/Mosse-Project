@@ -3,14 +3,14 @@
  */
 public final class Action {
     private final ActionKind kind;
-    private final Entity entity;
+    private final Animates animates;
     private final WorldModel world;
     private final ImageStore imageStore;
     private final int repeatCount;
 
-    public Action(ActionKind kind, Entity entity, WorldModel world, ImageStore imageStore, int repeatCount) {
+    public Action(ActionKind kind, Animates animates, WorldModel world, ImageStore imageStore, int repeatCount) {
         this.kind = kind;
-        this.entity = entity;
+        this.animates = animates;
         this.world = world;
         this.imageStore = imageStore;
         this.repeatCount = repeatCount;

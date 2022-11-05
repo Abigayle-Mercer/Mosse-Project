@@ -17,4 +17,5 @@ public interface Animates extends  Entity_I{
         return new Action(ActionKind.ANIMATION, this, null, null, repeatCount);
     }
 
+
 }

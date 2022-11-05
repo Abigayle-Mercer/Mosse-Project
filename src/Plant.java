@@ -1,51 +1,23 @@
-public class Plant implements Transformable, Animates{
-    @Override
-    public String getId() {
-        return null;
-    }
+import processing.core.PImage;
 
-    @Override
-    public EntityKind getKind() {
-        return null;
-    }
+import java.util.List;
 
-    @Override
-    public void setPosition(Point position) {
+public abstract class Plant extends Acitivites implements Transformable, Animates {
+    private int health;
+    private final int healthLimit;
 
-    }
+    public abstract void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler);
 
-    @Override
-    public Point getPosition() {
-        return null;
-    }
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        if (this.health <= 0) {
+            Entity stump = Functions.createStump(Functions.STUMP_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.STUMP_KEY));
 
-    @Override
-    public int getImageIndex() {
-        return 0;
-    }
+            world.removeEntity(this, scheduler);
 
-    @Override
-    public void setImageIndex(int i) {
+            world.addEntity(stump);
 
-    }
-
-    @Override
-    public int getHealth() {
-        return 0;
-    }
-
-    @Override
-    public int getHealthLimit() {
-        return 0;
-    }
-
-    @Override
-    public boolean transformTree(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        return false;
-    }
-
-    @Override
-    public boolean transformSapling(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+            return true;
+        }
         return false;
     }
 }

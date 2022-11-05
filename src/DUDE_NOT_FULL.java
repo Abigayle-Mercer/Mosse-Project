@@ -2,7 +2,7 @@ import processing.core.PImage;
 
 import java.util.*;
 
-public class DUDE_NOT_FULL {
+public class DUDE_NOT_FULL extends Dudes{
 
     private final EntityKind kind;
     private final String id;
@@ -53,10 +53,7 @@ public class DUDE_NOT_FULL {
     /**
      * Helper method for testing. Preserve this functionality while refactoring.
      */
-    public String log(){
-        return this.id.isEmpty() ? null :
-                String.format("%s %d %d %d", this.id, this.position.getX(), this.position.getY(), this.imageIndex);
-    }
+
 
     public void nextImage() {
         this.imageIndex = this.imageIndex + 1;
@@ -70,19 +67,7 @@ public class DUDE_NOT_FULL {
         }
     }
 
-    public double getAnimationPeriod() {
-        switch (this.kind) {
-            case DUDE_FULL:
-            case DUDE_NOT_FULL:
-            case OBSTACLE:
-            case FAIRY:
-            case SAPLING:
-            case TREE:
-                return this.animationPeriod;
-            default:
-                throw new UnsupportedOperationException(String.format("getAnimationPeriod not supported for %s", this.kind));
-        }
-    }
+
 
     public boolean transformNotFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         if (this.resourceCount >= this.resourceLimit) {
@@ -137,32 +122,20 @@ public class DUDE_NOT_FULL {
 
     }
 
-    public Action createAnimationAction( int repeatCount) {
-        return new Action(ActionKind.ANIMATION, this, null, null, repeatCount);
-    }
 
-    public Action createActivityAction(WorldModel world, ImageStore imageStore) {
-        return new Action(ActionKind.ACTIVITY, this, world, imageStore, 0);
-    }
 
 
 
     public Entity createDudeFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
         return new Entity(EntityKind.DUDE_FULL, id, position, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
     }
-    public boolean adjacent(Point p1, Point p2) {
-        return (p1.getX() == p2.getX() && Math.abs(p1.getY() - p2.getY()) == 1) || (p1.getY() == p2.getY() && Math.abs(p1.getX() - p2.getX()) == 1);
-    }
 
+    public void executeDudeNotFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> target = world.findNearest( this.position, new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
 
-    public int getIntFromRange(int max, int min) {
-        Random rand = new Random();
-        return min + rand.nextInt(max-min);
-    }
-
-    public double getNumFromRange(double max, double min) {
-        Random rand = new Random();
-        return min + rand.nextDouble() * (max - min);
+        if (target.isEmpty() || !this.moveToNotFull( world, target.get(), scheduler) || !transformNotFull(world, scheduler, imageStore)) {
+            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+        }
     }
 
 

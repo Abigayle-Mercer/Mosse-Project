@@ -4,6 +4,7 @@ import processing.core.PImage;
 
 
 public class House implements Entity_I {
+
     private final EntityKind kind;
     private final String id;
     private Point position;
@@ -11,20 +12,13 @@ public class House implements Entity_I {
     private int imageIndex;
 
 
-    public House(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
-        this.kind = kind;
+    public House(String id, Point position, List<PImage> images) {
+        this.kind = EntityKind.HOUSE;
         this.id = id;
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
-        this.resourceLimit = resourceLimit;
-        this.resourceCount = resourceCount;
-        this.actionPeriod = actionPeriod;
-        this.animationPeriod = animationPeriod;
-        this.health = health;
-        this.healthLimit = healthLimit;
     }
-
 
 
     public String getId() {
@@ -43,22 +37,14 @@ public class House implements Entity_I {
         return position;
     }
 
-    @Override
-    public int getImageIndex() {
-        return this.imageIndex;
-    }
+    public List<PImage> getImages() { return images;}
 
-    @Override
-    public void setImageIndex(int i) {
-        this.imageIndex = i;
+    public int getImageIndex() {return imageIndex;}
 
-    }
+    public void setImageIndex(int i) { imageIndex = i;}
 
-    public PImage getCurrentImage() { // Turn into two overloaded methods
 
-        return this.images.get(this.imageIndex % this.images.size());
 
-    }
 
 
 }

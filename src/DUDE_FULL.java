@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class DUDE_FULL {
+public class DUDE_FULL extends Dudes {
     private final EntityKind kind;
     private final String id;
     private Point position;
@@ -102,19 +102,7 @@ public class DUDE_FULL {
     }
 
 
-    public double getAnimationPeriod() {
-        switch (this.kind) {
-            case DUDE_FULL:
-            case DUDE_NOT_FULL:
-            case OBSTACLE:
-            case FAIRY:
-            case SAPLING:
-            case TREE:
-                return this.animationPeriod;
-            default:
-                throw new UnsupportedOperationException(String.format("getAnimationPeriod not supported for %s", this.kind));
-        }
-    }
+
 
 
     public Point nextPositionDude(WorldModel world, Point destPos) {
@@ -140,9 +128,7 @@ public class DUDE_FULL {
 
     }
 
-    public Action createAnimationAction( int repeatCount) {
-        return new Action(ActionKind.ANIMATION, this, null, null, repeatCount);
-    }
+
 
     public Action createActivityAction(WorldModel world, ImageStore imageStore) {
         return new Action(ActionKind.ACTIVITY, this, world, imageStore, 0);
@@ -153,19 +139,15 @@ public class DUDE_FULL {
     public Entity createDudeFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
         return new Entity(EntityKind.DUDE_FULL, id, position, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
     }
-    public boolean adjacent(Point p1, Point p2) {
-        return (p1.getX() == p2.getX() && Math.abs(p1.getY() - p2.getY()) == 1) || (p1.getY() == p2.getY() && Math.abs(p1.getX() - p2.getX()) == 1);
-    }
 
+    public void executeDudeFullActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> fullTarget = world.findNearest(this.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
 
-    public int getIntFromRange(int max, int min) {
-        Random rand = new Random();
-        return min + rand.nextInt(max-min);
-    }
-
-    public double getNumFromRange(double max, double min) {
-        Random rand = new Random();
-        return min + rand.nextDouble() * (max - min);
+        if (fullTarget.isPresent() && this.moveToFull(world, fullTarget.get(), scheduler)) {
+            transformFull(world, scheduler, imageStore);
+        } else {
+            scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+        }
     }
 
 

@@ -11,10 +11,7 @@ public final class Entity {
     private static final double TREE_ANIMATION_MIN = 0.050;
     private static final double TREE_ACTION_MAX = 1.400;
     private static final double TREE_ACTION_MIN = 1.000;
-
-
     private static final int TREE_HEALTH_MAX = 3;
-
     private static final int TREE_HEALTH_MIN = 1;
     private final EntityKind kind;
     private final String id;
@@ -121,6 +118,35 @@ public final class Entity {
         }
     }
 
+    public boolean moveToNotFull(WorldModel world, Entity target, EventScheduler scheduler) {
+        if (adjacent(this.position, target.position)) {
+            this.resourceCount += 1;
+            target.health--;
+            return true;
+        } else {
+            Point nextPos = this.nextPositionDude(world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                world.moveEntity(this, scheduler, nextPos);
+            }
+            return false;
+        }
+    }
+
+    public boolean moveToFairy(WorldModel world, Entity target, EventScheduler scheduler) {
+        if (adjacent(this.position, target.position)) {
+            world.removeEntity(target, scheduler);
+            return true;
+        } else {
+            Point nextPos = this.nextPositionFairy(world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                world.moveEntity(this, scheduler, nextPos);
+            }
+            return false;
+        }
+    }
+
     public void transformFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         Entity dude = Functions.createDudeNotFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
 
@@ -161,7 +187,7 @@ public final class Entity {
         return false;
     }
 
-    public boolean transformPlant(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+    public boolean transformPlant(WorldModel world, EventScheduler scheduler, ImageStore imageStore) { // dont need
         if (this.kind == EntityKind.TREE) {
             return transformTree(world, scheduler, imageStore);
         } else if (this.kind == EntityKind.SAPLING) {
@@ -265,19 +291,7 @@ public final class Entity {
     }
 
 
-    public boolean moveToFairy(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (adjacent(this.position, target.position)) {
-            world.removeEntity(target, scheduler);
-            return true;
-        } else {
-            Point nextPos = this.nextPositionFairy(world, target.position);
 
-            if (!this.position.equals(nextPos)) {
-                world.moveEntity(this, scheduler, nextPos);
-            }
-            return false;
-        }
-    }
 
 
 
@@ -318,20 +332,7 @@ public final class Entity {
         return newPos;
     }
 
-    public boolean moveToNotFull(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (adjacent(this.position, target.position)) {
-            this.resourceCount += 1;
-            target.health--;
-            return true;
-        } else {
-            Point nextPos = this.nextPositionDude(world, target.position);
 
-            if (!this.position.equals(nextPos)) {
-                world.moveEntity(this, scheduler, nextPos);
-            }
-            return false;
-        }
-    }
 
     public PImage getCurrentImage() { // Turn into two overloaded methods
 

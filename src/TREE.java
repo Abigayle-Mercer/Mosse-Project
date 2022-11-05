@@ -1,9 +1,10 @@
 import processing.core.PImage;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class TREE implements Transformable, Animates{
+public class TREE extends Plant {
+
+
     private static final double TREE_ANIMATION_MAX = 0.600;
     private static final double TREE_ANIMATION_MIN = 0.050;
     private static final double TREE_ACTION_MAX = 1.400;
@@ -13,19 +14,41 @@ public class TREE implements Transformable, Animates{
     private static final int TREE_HEALTH_MAX = 3;
 
     private static final int TREE_HEALTH_MIN = 1;
-
-
     private final EntityKind kind;
     private final String id;
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
-
+    private final int resourceLimit;
+    private int resourceCount;
     private final double actionPeriod;
     private final double animationPeriod;
     private int health;
+    private final int healthLimit;
 
-    public Tree(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
+    public String getId() {
+        return id;
+    }
+
+    public EntityKind getKind() {
+        return kind;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+
+
+    public Entity(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
         this.kind = kind;
         this.id = id;
         this.position = position;
@@ -41,76 +64,66 @@ public class TREE implements Transformable, Animates{
 
 
 
-    public Point getPosition() {
-        return position;
-    }
+
 
     @Override
-    public int getImageIndex() {
-        return 0;
-    }
+    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
 
-    @Override
-    public void setImageIndex(int i) {
+        if (!transform(world, scheduler, imageStore)) {
 
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public int getHealthLimit() {
-        return 0;
-    }
-
-    public EntityKind getKind() {
-        return kind;
-    }
-    public String getId() {
-        return id;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-
-
-    public boolean transformTree(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        if (this.health <= 0) {
-            Entity stump = Functions.createStump(Functions.STUMP_KEY + "_" + this.id, this.position, imageStore.getImageList(Functions.STUMP_KEY));
-
-            world.removeEntity(stump, scheduler);
-
-            world.addEntity(stump);
-
-            return true;
+            scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
         }
-
-        return false;
     }
+
 
     @Override
-    public boolean transformSapling(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        return false;
-    }
-
-    public PImage getCurrentImage() { // Turn into two overloaded methods
-
-        return this.images.get(this.imageIndex % this.images.size());
-
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+       return super.transform(world, scheduler, imageStore);
     }
 
 
-    public Action createActivityAction(WorldModel world, ImageStore imageStore) {
-        return new Action(ActionKind.ACTIVITY, this, world, imageStore, 0);
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        switch (this.kind) {
+            case DUDE_FULL:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            case DUDE_NOT_FULL:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            case OBSTACLE:
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            case FAIRY:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            case SAPLING:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            case TREE:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            default:
+        }
     }
 
 
-    public void nextImage() {
-        this.imageIndex = this.imageIndex + 1;
-    };
+
+
+
+
+
+
 
 
 

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class FAIRY {
+public class FAIRY extends Move{
 
     private final EntityKind kind;
     private final String id;
@@ -160,10 +160,7 @@ public class FAIRY {
         return min + rand.nextInt(max-min);
     }
 
-    public double getNumFromRange(double max, double min) {
-        Random rand = new Random();
-        return min + rand.nextDouble() * (max - min);
-    }
+
 
     public double getAnimationPeriod() {
         switch (this.kind) {
