@@ -2,9 +2,17 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public abstract class Plant extends Acitivites implements Transformable, Animates {
-    private int health;
+public abstract class Plant extends Activities implements Transformable, Animates {
+
+    private final int health;
     private final int healthLimit;
+
+
+    public Plant(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod, int health, int healthLimit) {
+        super(kind, id, position, images, actionPeriod);
+        this.health = health;
+        this.healthLimit = healthLimit;
+    }
 
     public abstract void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler);
 
