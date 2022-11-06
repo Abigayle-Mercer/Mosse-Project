@@ -10,6 +10,7 @@ public class STUMP implements Entity_I{
     private final List<PImage> images;
     private int imageIndex;
 
+    // comment
 
     public STUMP(String id, Point position, List<PImage> images) {
         this.kind = EntityKind.STUMP;
