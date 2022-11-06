@@ -5,7 +5,7 @@ import java.util.*;
  */
 public final class EventScheduler {
     private final PriorityQueue<Event> eventQueue;
-    private final Map<Entity, List<Event>> pendingEvents;
+    private final Map<Entity_I, List<Event>> pendingEvents;
     private double currentTime;
 
     public EventScheduler() {
@@ -22,7 +22,7 @@ public final class EventScheduler {
         return currentTime;
     }
 
-    public void scheduleEvent(Entity entity, Action action, double afterPeriod) {
+    public void scheduleEvent(Entity_I entity, Action action, double afterPeriod) {
         double time = this.currentTime + afterPeriod;
 
         Event event = new Event(action, time, entity);
@@ -35,7 +35,7 @@ public final class EventScheduler {
         this.pendingEvents.put(entity, pending);
     }
 
-    public void unscheduleAllEvents(Entity entity) {
+    public void unscheduleAllEvents(Entity_I entity) {
         List<Event> pending = this.pendingEvents.remove(entity);
 
         if (pending != null) {
@@ -55,11 +55,6 @@ public final class EventScheduler {
         }
         this.currentTime = stopTime;
     }
-
-
-
-
-
 
 
 
