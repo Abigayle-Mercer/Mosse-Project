@@ -44,5 +44,4 @@ public class STUMP implements Entity_I{
     public void setImageIndex(int i) { imageIndex = i;}
 
 
-
 }

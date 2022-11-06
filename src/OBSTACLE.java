@@ -22,7 +22,6 @@ public class OBSTACLE implements Animates{
         this.images = images;
         this.imageIndex = 0;
         this.animationPeriod = animationPeriod;
-
     }
 
 
@@ -47,6 +46,10 @@ public class OBSTACLE implements Animates{
     public int getImageIndex() {return imageIndex;}
 
     public void setImageIndex(int i) { imageIndex = i;}
+
+    public double getAnimationPeriod() {
+        return animationPeriod;
+    }
 
 
 
@@ -91,14 +94,6 @@ public class OBSTACLE implements Animates{
             default:
         }
     }
-
-
-
-
-
-
-
-
 
 
 

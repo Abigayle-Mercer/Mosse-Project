@@ -116,14 +116,7 @@ public final class Entity {
         }
     }
 
-    public void transformFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        Entity dude = Functions.createDudeNotFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
 
-        world.removeEntity(this, scheduler);
-
-        world.addEntity(dude);
-        dude.scheduleActions(scheduler, world, imageStore);
-    }
 
 
     public double getAnimationPeriod() {
@@ -138,6 +131,15 @@ public final class Entity {
             default:
                 throw new UnsupportedOperationException(String.format("getAnimationPeriod not supported for %s", this.kind));
         }
+    }
+
+    public void transformFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        Entity dude = Functions.createDudeNotFull(this.id, this.position, this.actionPeriod, this.animationPeriod, this.resourceLimit, this.images);
+
+        world.removeEntity(this, scheduler);
+
+        world.addEntity(dude);
+        dude.scheduleActions(scheduler, world, imageStore);
     }
 
     public boolean transformNotFull(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {

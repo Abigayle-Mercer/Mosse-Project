@@ -2,6 +2,8 @@ import processing.core.PImage;
 
 import java.util.List;
 
+
+
 public abstract class Activities implements Entity_I{
     private final EntityKind kind;
     private final String id;
@@ -21,6 +23,10 @@ public abstract class Activities implements Entity_I{
         this.actionPeriod = actionPeriod;
     }
 
+    public EntityKind getKind() {
+        return kind;
+    }
+
     public String getId() {
         return id;
     }
@@ -38,6 +44,9 @@ public abstract class Activities implements Entity_I{
     public int getImageIndex() {return imageIndex;}
 
     public void setImageIndex(int i) { imageIndex = i;}
+
+    public double getActionPeriod() {return actionPeriod;}
+
 
 
 
