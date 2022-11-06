@@ -20,7 +20,7 @@ public class DUDE_NOT_FULL extends Dudes{
             this.resourceCount += 1;
             if (target instanceof TREE) {
                 TREE tree = (TREE) target;
-                tree.setHealth(target.getHealth() - 1);
+                tree.setHealth(tree.getHealth() - 1);
             }
             return true;
         } else {

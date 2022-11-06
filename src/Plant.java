@@ -8,14 +8,14 @@ import java.util.List;
 public abstract class Plant extends Activities implements Transformable, Animates {
 
 
-    private static final double TREE_ANIMATION_MAX = 0.600;
-    private static final double TREE_ANIMATION_MIN = 0.050;
-    private static final double TREE_ACTION_MAX = 1.400;
-    private static final double TREE_ACTION_MIN = 1.000;
+    static final double TREE_ANIMATION_MAX = 0.600;
+    static final double TREE_ANIMATION_MIN = 0.050;
+    static final double TREE_ACTION_MAX = 1.400;
+    static final double TREE_ACTION_MIN = 1.000;
 
 
-    private static final int TREE_HEALTH_MAX = 3;
-    private static final int TREE_HEALTH_MIN = 1;
+    static final int TREE_HEALTH_MAX = 3;
+    static final int TREE_HEALTH_MIN = 1;
 
     private int health;
     private final int healthLimit;

@@ -41,5 +41,10 @@ public interface Entity_I {
         return min + rand.nextDouble() * (max - min);
     }
 
+    default int getIntFromRange(int max, int min) {
+        Random rand = new Random();
+        return min + rand.nextInt(max-min);
+    }
+
 
 }

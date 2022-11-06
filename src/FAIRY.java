@@ -39,7 +39,7 @@ public class FAIRY extends Move implements Animates {
     }
 
     @Override
-    public boolean moveTo(WorldModel world, Entity target, EventScheduler scheduler) {
+    public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
         if (adjacent(this.getPosition(), target.getPosition())) {
             world.removeEntity(target, scheduler);
             return true;

@@ -8,7 +8,7 @@ public abstract class Move extends Activities {
         super(kind, id, position, images, actionPeriod);
     }
 
-    public boolean moveTo(WorldModel world, Entity target, EventScheduler scheduler) {
+    public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
             Point nextPos = this.nextPosition(world, target.getPosition());
 
             if (!this.getPosition().equals(nextPos)) {
