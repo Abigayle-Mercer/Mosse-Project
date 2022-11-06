@@ -57,4 +57,8 @@ public abstract class Activities implements Entity_I{
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
     }
-}
+
+
+
+
+    }

@@ -39,39 +39,7 @@ public class SAPLING extends Plant{
     }
 
 
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-        switch (this.kind) {
-            case DUDE_FULL:
-                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
-                break;
 
-            case DUDE_NOT_FULL:
-                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
-                break;
-
-            case OBSTACLE:
-                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
-                break;
-
-            case FAIRY:
-                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
-                break;
-
-            case SAPLING:
-                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
-                break;
-
-            case TREE:
-                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
-                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
-                break;
-
-            default:
-        }
     }
 
 

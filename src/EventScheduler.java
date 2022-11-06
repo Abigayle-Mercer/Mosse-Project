@@ -58,6 +58,43 @@ public final class EventScheduler {
 
 
 
+    public void scheduleActions(Entity entity, WorldModel world, ImageStore imageStore) {
+        switch (entity.getKind()) {
+            case DUDE_FULL:
+                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
+                break;
+
+            case DUDE_NOT_FULL:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
+                break;
+
+            case OBSTACLE:
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
+                break;
+
+            case FAIRY:
+                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction( 0), this.getAnimationPeriod());
+                break;
+
+            case SAPLING:
+                scheduler.scheduleEvent(this, createActivityAction( world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            case TREE:
+                scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.actionPeriod);
+                scheduler.scheduleEvent(this, createAnimationAction(0), this.getAnimationPeriod());
+                break;
+
+            default:
+        }
+    }
+
+
+
 
 
 

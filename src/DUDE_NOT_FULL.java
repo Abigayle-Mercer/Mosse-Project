@@ -15,10 +15,13 @@ public class DUDE_NOT_FULL extends Dudes{
 
 
     @Override
-    public boolean moveTo(WorldModel world, Entity target, EventScheduler scheduler) {
+    public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
         if (adjacent(this.getPosition(), target.getPosition())) {
             this.resourceCount += 1;
-            target.health--;
+            if (target instanceof TREE) {
+                TREE tree = (TREE) target;
+                tree.setHealth(target.getHealth() - 1);
+            }
             return true;
         } else {
             return super.moveTo(world, target, scheduler);

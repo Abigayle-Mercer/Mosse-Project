@@ -48,12 +48,13 @@ public abstract class Dudes extends Move implements Animates, Transformable{
 
     @Override
     public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        Entity dude = Functions.createDudeNotFull(this.getId(), this.getPosition(), this.getActionPeriod(), this.animationPeriod, this.getResourceLimit(), this.getImages());
+        Entity dude = Functions.createDudeNotFull(this.getId(), this.getPosition(), this.getActionPeriod(), this.getAnimationPeriod(), this.getResourceLimit(), this.getImages());
 
         world.removeEntity(this, scheduler);
 
         world.addEntity(dude);
         dude.scheduleActions(scheduler, world, imageStore);
+        return true;
 
     }
 
