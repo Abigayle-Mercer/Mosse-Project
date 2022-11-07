@@ -297,17 +297,7 @@ public final class WorldModel {
         }
     }
 
-    public static Entity createFairy(String id, Point position, double actionPeriod, double animationPeriod, List<PImage> images) {
-        return new Entity(EntityKind.FAIRY, id, position, images, 0, 0, actionPeriod, animationPeriod, 0, 0);
-    }
 
-    public Entity createObstacle(String id, Point position, double animationPeriod, List<PImage> images) {
-        return new Entity(EntityKind.OBSTACLE, id, position, images, 0, 0, 0, animationPeriod, 0, 0);
-    }
-
-    public Entity createHouse(String id, Point position, List<PImage> images) {
-        return new Entity(EntityKind.HOUSE, id, position, images, 0, 0, 0, 0, 0, 0);
-    }
 
     public Optional<Entity_I> nearestEntity(List<Entity_I> entities, Point pos) { // Entity?
         if (entities.isEmpty()) {

@@ -17,18 +17,15 @@ public class TREE extends Plant {
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
 
-        if (!transform(world, scheduler, imageStore)) {
+        if (!transform(world, scheduler, imageStore, EntityKind.STUMP)) {
             super.executeActivity(world, imageStore, scheduler);
         }
     }
 
 
-    @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-       return super.transform(world, scheduler, imageStore);
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+       return super.transform(world, scheduler, imageStore, EntityKind.STUMP);
     }
-
-
 
 
 

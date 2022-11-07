@@ -51,7 +51,7 @@ public abstract class Plant extends Activities implements Transformable, Animate
     }
 
 
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
         if (this.health <= 0) {
             Entity_I stump = new STUMP(EntityKind.STUMP, Functions.STUMP_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.STUMP_KEY));
 

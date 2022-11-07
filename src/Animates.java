@@ -21,7 +21,7 @@ public interface Animates extends  Entity_I{
     double getAnimationPeriod();
 
     default Action createAnimationAction( int repeatCount) {
-        return new Action(ActionKind.ANIMATION, this, null, null, repeatCount);
+        return new Animation(this, null, null, repeatCount);
     }
 
 
