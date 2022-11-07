@@ -15,8 +15,8 @@ public class OBSTACLE implements Animates{
     private final double animationPeriod;
 
 
-    public OBSTACLE(String id, Point position, List<PImage> images, double animationPeriod) {
-        this.kind = EntityKind.OBSTACLE;
+    public OBSTACLE(EntityKind kind, String id, Point position, List<PImage> images, double animationPeriod) {
+        this.kind = kind;
         this.id = id;
         this.position = position;
         this.images = images;

@@ -14,7 +14,7 @@ public final class EventScheduler {
         this.currentTime = 0;
     }
 
-    public Map<Entity, List<Event>> getPendingEvents() {
+    public Map<Entity_I, List<Event>> getPendingEvents() {
         return pendingEvents;
     }
 

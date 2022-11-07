@@ -22,7 +22,7 @@ public class DUDE_FULL extends Dudes {
     }
 
     @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        return super.transform(world, scheduler, imageStore);
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+        return super.transform(world, scheduler, imageStore, EntityKind.DUDE_NOT_FULL);
     }
 }

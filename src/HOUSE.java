@@ -3,7 +3,7 @@ import java.util.*;
 import processing.core.PImage;
 
 
-public class House implements Entity_I {
+public class HOUSE implements Entity_I {
 
     private final EntityKind kind;
     private final String id;
@@ -12,8 +12,8 @@ public class House implements Entity_I {
     private int imageIndex;
 
 
-    public House(String id, Point position, List<PImage> images) {
-        this.kind = EntityKind.HOUSE;
+    public HOUSE(EntityKind kind, String id, Point position, List<PImage> images) {
+        this.kind = kind;
         this.id = id;
         this.position = position;
         this.images = images;

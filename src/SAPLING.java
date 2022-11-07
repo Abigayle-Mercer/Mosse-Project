@@ -4,11 +4,15 @@ import java.util.*;
 
 public class SAPLING extends Plant{
 
+    public static final double SAPLING_ACTION_ANIMATION_PERIOD = 1.000; // have to be in sync since grows and gains health at same time
+    public static final int SAPLING_HEALTH_LIMIT = 5;
+    public static final String STUMP_KEY = "stump";
+    public static final String SAPLING_KEY = "sapling";
+    public static final String TREE_KEY = "tree";
 
 
-
-    public SAPLING(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
-        super(kind, id, position,  images,  actionPeriod, animationPeriod, health, healthLimit);
+    public SAPLING(EntityKind kind, String id, Point position, List<PImage> images, int health) {
+        super(kind, id, position,  images,  SAPLING_ACTION_ANIMATION_PERIOD, SAPLING_ACTION_ANIMATION_PERIOD, health, SAPLING_HEALTH_LIMIT);
     }
 
 
@@ -25,7 +29,7 @@ public class SAPLING extends Plant{
         if (super.transform(world, scheduler, imageStore)) {
 
         } else if (this.getHealth() >= this.getHealthLimit()) {
-            Entity tree = Functions.createTree(Functions.TREE_KEY + "_" + this.getId(), this.getPosition(), getNumFromRange(TREE_ACTION_MAX, TREE_ACTION_MIN), getNumFromRange(TREE_ANIMATION_MAX, TREE_ANIMATION_MIN), getIntFromRange(TREE_HEALTH_MAX, TREE_HEALTH_MIN), imageStore.getImageList(Functions.TREE_KEY));
+            Entity_I tree = new TREE(EntityKind.TREE, Functions.TREE_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.TREE_KEY), getNumFromRange(TREE_ACTION_MAX, TREE_ACTION_MIN), getNumFromRange(TREE_ANIMATION_MAX, TREE_ANIMATION_MIN), getIntFromRange(TREE_HEALTH_MAX, TREE_HEALTH_MIN), 0);
 
             world.removeEntity(this, scheduler);
 

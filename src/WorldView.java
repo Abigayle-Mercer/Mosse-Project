@@ -28,7 +28,7 @@ public final class WorldView {
     }
 
     public void drawEntities() {
-        for (Entity entity : this.world.getEntities()) {
+        for (Entity_I entity : this.world.getEntities()) {
             Point pos = entity.getPosition();
 
             if (this.viewport.contains(pos)) {

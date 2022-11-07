@@ -27,4 +27,16 @@ public class DUDE_NOT_FULL extends Dudes{
             return super.moveTo(world, target, scheduler);
         }
     }
+
+    @Override
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+        if (this.resourceCount >= this.resourceLimit) {
+            scheduler.unscheduleAllEvents(this);
+            return super.transform(world, scheduler, imageStore, EntityKind.DUDE_FULL);
+        }
+
+        return false;
+    }
+
+
 }

@@ -7,9 +7,9 @@ import java.util.List;
 public final class Event {
     private final Action action;
     private final double time;
-    private final Entity entity;
+    private final Entity_I entity;
 
-    public Event(Action action, double time, Entity entity) {
+    public Event(Action action, double time, Entity_I entity) {
         this.action = action;
         this.time = time;
         this.entity = entity;

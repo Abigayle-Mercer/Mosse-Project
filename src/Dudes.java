@@ -2,11 +2,11 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public abstract class Dudes extends Move implements Animates, Transformable{
+public class Dudes extends Move implements Animates, Transformable{
 
     private final double animationPeriod;
 
-    private final int resourceLimit;
+    public final int resourceLimit;
     public int resourceCount;
     public Dudes(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int resourceCount, int resourceLimit) {
         super(kind, id, position, images, actionPeriod);
@@ -47,8 +47,8 @@ public abstract class Dudes extends Move implements Animates, Transformable{
     }
 
     @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        Entity dude = Functions.createDudeNotFull(this.getId(), this.getPosition(), this.getActionPeriod(), this.getAnimationPeriod(), this.getResourceLimit(), this.getImages());
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+        Entity_I dude = new Dudes(kind, this.getId(), this.getPosition(),  this.getImages(), this.getActionPeriod(), this.getAnimationPeriod(), 0, this.getResourceLimit());
 
         world.removeEntity(this, scheduler);
 

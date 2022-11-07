@@ -50,14 +50,14 @@ public class FAIRY extends Move implements Animates {
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> fairyTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(EntityKind.STUMP)));
+        Optional<Entity_I> fairyTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(EntityKind.STUMP)));
 
         if (fairyTarget.isPresent()) {
             Point tgtPos = fairyTarget.get().getPosition();
 
             if (this.moveTo(world, fairyTarget.get(), scheduler)) {
 
-                Entity sapling = Functions.createSapling(Functions.SAPLING_KEY + "_" + fairyTarget.get().getId(), tgtPos, imageStore.getImageList(Functions.SAPLING_KEY), 0);
+                SAPLING sapling = new SAPLING(EntityKind.SAPLING, Functions.SAPLING_KEY + "_" + fairyTarget.get().getId(), tgtPos, imageStore.getImageList(Functions.SAPLING_KEY), 0);
 
                 world.addEntity(sapling);
                 sapling.scheduleActions(scheduler, world, imageStore);
