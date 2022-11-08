@@ -59,9 +59,9 @@ public abstract class Plant extends Activities implements Transformable, Animate
 
             world.addEntity(stump);
 
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
 

@@ -174,7 +174,7 @@ public class WorldTests {
     public void testDudeLimit() {
         String sav = makeSave(5, 20, "dude mydude 1 1 0.300 100.0 4", "tree  1 2 100.0 0.020 1", "tree  2 2 100.0 0.020 1", "tree  3 2 100.0 0.020 1", "tree  4 2 100.0 0.020 1", "tree  5 2 100.0 0.020 1", "tree  6 2 100.0 0.020 1");
         List<String> entities = VirtualWorld.headlessMain(new String[]{sav}, 8);
-
+        entities.stream().forEach(System.out::println);
         assertTrue(entities.stream().anyMatch("mydude 4 1 0"::equals));
     }
 

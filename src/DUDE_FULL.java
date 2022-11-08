@@ -3,7 +3,6 @@ import processing.core.PImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class DUDE_FULL extends Dudes {
 
@@ -24,5 +23,16 @@ public class DUDE_FULL extends Dudes {
     @Override
     public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
         return super.transform(world, scheduler, imageStore, EntityKind.DUDE_NOT_FULL);
+    }
+
+    @Override
+    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity_I> fullTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(EntityKind.HOUSE)));
+
+        if (fullTarget.isPresent() && moveTo( world, fullTarget.get(), scheduler)) {
+            transform(world, scheduler, imageStore, EntityKind.STUMP);
+        } else {
+            scheduler.scheduleEvent( this, createActivityAction(world, imageStore), this.getActionPeriod());
+        }
     }
 }

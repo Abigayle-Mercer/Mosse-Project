@@ -19,7 +19,7 @@ public class SAPLING extends Plant{
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         this.setHealth(this.getHealth() + 1);
-        if (!transform(world, scheduler, imageStore, EntityKind.TREE)) {
+        if (transform(world, scheduler, imageStore, EntityKind.TREE)) {
             super.executeActivity(world, imageStore, scheduler);
         }
     }
@@ -37,10 +37,10 @@ public class SAPLING extends Plant{
             world.addEntity(tree);
             tree.scheduleActions(scheduler, world, imageStore);
 
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
 

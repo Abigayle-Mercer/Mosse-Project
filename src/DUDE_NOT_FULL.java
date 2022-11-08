@@ -22,6 +22,10 @@ public class DUDE_NOT_FULL extends Dudes{
                 TREE tree = (TREE) target;
                 tree.setHealth(tree.getHealth() - 1);
             }
+            if (target instanceof SAPLING) {
+                SAPLING sapling = (SAPLING) target;
+                sapling.setHealth(sapling.getHealth() - 1);
+            }
             return true;
         } else {
             return super.moveTo(world, target, scheduler);
@@ -35,7 +39,16 @@ public class DUDE_NOT_FULL extends Dudes{
             return super.transform(world, scheduler, imageStore, EntityKind.DUDE_FULL);
         }
 
-        return false;
+        return true;
+    }
+
+    @Override
+    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
+
+        if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore, EntityKind.DUDE_FULL)) {
+            scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
+        }
     }
 
 

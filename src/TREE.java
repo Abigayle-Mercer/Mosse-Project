@@ -17,7 +17,7 @@ public class TREE extends Plant {
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
 
-        if (!transform(world, scheduler, imageStore, EntityKind.STUMP)) {
+        if (transform(world, scheduler, imageStore, EntityKind.STUMP)) {
             super.executeActivity(world, imageStore, scheduler);
         }
     }
