@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public abstract class Activities implements Entity_I{
-    private final EntityKind kind;
+
     private final String id;
     private Point position;
     private final List<PImage> images;
@@ -14,8 +14,8 @@ public abstract class Activities implements Entity_I{
     private final double actionPeriod;
 
 
-    public Activities(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod) {
-        this.kind = kind;
+    public Activities(String id, Point position, List<PImage> images, double actionPeriod) {
+
         this.id = id;
         this.position = position;
         this.images = images;
@@ -23,9 +23,7 @@ public abstract class Activities implements Entity_I{
         this.actionPeriod = actionPeriod;
     }
 
-    public EntityKind getKind() {
-        return kind;
-    }
+
 
     public String getId() {
         return id;

@@ -31,8 +31,8 @@ public abstract class Plant extends Activities implements Transformable, Animate
 
 
 
-    public Plant(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int health, int healthLimit) {
-        super(kind, id, position, images, actionPeriod);
+    public Plant(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int health, int healthLimit) {
+        super(id, position, images, actionPeriod);
         this.health = health;
         this.healthLimit = healthLimit;
         this.animationPeriod = animationPeriod;
@@ -53,7 +53,7 @@ public abstract class Plant extends Activities implements Transformable, Animate
 
     public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
         if (this.health <= 0) {
-            Entity_I stump = new STUMP(EntityKind.STUMP, Functions.STUMP_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.STUMP_KEY));
+            Entity_I stump = new STUMP(Functions.STUMP_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.STUMP_KEY));
 
             world.removeEntity(this, scheduler);
 

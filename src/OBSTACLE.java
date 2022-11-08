@@ -5,7 +5,7 @@ import java.util.*;
 public class OBSTACLE implements Animates{
 
 
-    private final EntityKind kind;
+
     private final String id;
     private Point position;
     private final List<PImage> images;
@@ -15,8 +15,7 @@ public class OBSTACLE implements Animates{
     private final double animationPeriod;
 
 
-    public OBSTACLE(EntityKind kind, String id, Point position, List<PImage> images, double animationPeriod) {
-        this.kind = kind;
+    public OBSTACLE(String id, Point position, List<PImage> images, double animationPeriod) {
         this.id = id;
         this.position = position;
         this.images = images;
@@ -29,9 +28,7 @@ public class OBSTACLE implements Animates{
         return id;
     }
 
-    public EntityKind getKind() {
-        return kind;
-    }
+
 
     public void setPosition(Point position) {
         this.position = position;

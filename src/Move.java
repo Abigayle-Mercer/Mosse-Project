@@ -4,8 +4,8 @@ import java.util.List;
 
 public abstract class Move extends Activities {
 
-    public Move(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod) {
-        super(kind, id, position, images, actionPeriod);
+    public Move(String id, Point position, List<PImage> images, double actionPeriod) {
+        super(id, position, images, actionPeriod);
     }
 
     public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {

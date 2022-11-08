@@ -76,10 +76,10 @@ public final class VirtualWorld extends PApplet {
             if (entityOptional.get() instanceof Plant) {
                 Plant plant = (Plant) entityOptional.get();
 
-                System.out.println(entity.getId() + ": " + entity.getKind() + " : " + plant.getHealth());
+                System.out.println(entity.getId() + ": " + entity.getClass() + " : " + plant.getHealth());
             }
             else {
-                System.out.println(entity.getId() + ": " + entity.getKind() + " : 0");
+                System.out.println(entity.getId() + ": " + entity.getClass() + " : 0");
 
             }
         }

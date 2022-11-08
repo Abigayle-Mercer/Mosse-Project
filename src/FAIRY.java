@@ -10,8 +10,8 @@ public class FAIRY extends Move implements Animates {
     private final double animationPeriod;
 
 
-    public FAIRY(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
-        super(kind, id, position, images, actionPeriod);
+    public FAIRY(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
+        super(id, position, images, actionPeriod);
         this.animationPeriod = animationPeriod;
     }
 
@@ -50,14 +50,14 @@ public class FAIRY extends Move implements Animates {
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity_I> fairyTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(EntityKind.STUMP)));
+        Optional<Entity_I> fairyTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(STUMP.class)));
 
         if (fairyTarget.isPresent()) {
             Point tgtPos = fairyTarget.get().getPosition();
 
             if (this.moveTo(world, fairyTarget.get(), scheduler)) {
 
-                SAPLING sapling = new SAPLING(EntityKind.SAPLING, Functions.SAPLING_KEY + "_" + fairyTarget.get().getId(), tgtPos, imageStore.getImageList(Functions.SAPLING_KEY), 0);
+                SAPLING sapling = new SAPLING(Functions.SAPLING_KEY + "_" + fairyTarget.get().getId(), tgtPos, imageStore.getImageList(Functions.SAPLING_KEY), 0);
 
                 world.addEntity(sapling);
                 sapling.scheduleActions(scheduler, world, imageStore);

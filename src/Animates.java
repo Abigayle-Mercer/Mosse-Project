@@ -9,7 +9,6 @@ public interface Animates extends  Entity_I{
     int getImageIndex();
     String getId();
 
-    EntityKind getKind();
 
     void setPosition(Point position);
 

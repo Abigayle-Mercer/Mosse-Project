@@ -11,8 +11,8 @@ public class SAPLING extends Plant{
     public static final String TREE_KEY = "tree";
 
 
-    public SAPLING(EntityKind kind, String id, Point position, List<PImage> images, int health) {
-        super(kind, id, position,  images,  SAPLING_ACTION_ANIMATION_PERIOD, SAPLING_ACTION_ANIMATION_PERIOD, health, SAPLING_HEALTH_LIMIT);
+    public SAPLING(String id, Point position, List<PImage> images, int health) {
+        super(id, position,  images,  SAPLING_ACTION_ANIMATION_PERIOD, SAPLING_ACTION_ANIMATION_PERIOD, health, SAPLING_HEALTH_LIMIT);
     }
 
 

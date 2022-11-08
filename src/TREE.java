@@ -9,7 +9,7 @@ public class TREE extends Plant {
 
 
     public TREE(EntityKind kind, String id, Point position, List<PImage> images,double actionPeriod, double animationPeriod, int health, int healthLimit) {
-        super(kind, id, position,  images,  actionPeriod, animationPeriod, health, healthLimit);
+        super(id, position,  images,  actionPeriod, animationPeriod, health, healthLimit);
     }
 
 

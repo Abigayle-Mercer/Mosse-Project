@@ -7,8 +7,8 @@ import java.util.Optional;
 public class DUDE_FULL extends Dudes {
 
 
-    public DUDE_FULL(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int resourceCount, int resourceLimit) {
-        super(kind, id, position, images, actionPeriod, animationPeriod, resourceCount, resourceLimit);
+    public DUDE_FULL(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int resourceCount, int resourceLimit) {
+        super(id, position, images, actionPeriod, animationPeriod, resourceCount, resourceLimit);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class DUDE_FULL extends Dudes {
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity_I> fullTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(EntityKind.HOUSE)));
+        Optional<Entity_I> fullTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(HOUSE.class)));
 
         if (fullTarget.isPresent() && moveTo( world, fullTarget.get(), scheduler)) {
             transform(world, scheduler, imageStore, EntityKind.STUMP);

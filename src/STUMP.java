@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 public class STUMP implements Entity_I{
-    private final EntityKind kind;
+
     private final String id;
     private Point position;
     private final List<PImage> images;
@@ -12,8 +12,7 @@ public class STUMP implements Entity_I{
 
     // comment
 
-    public STUMP(EntityKind kind, String id, Point position, List<PImage> images) {
-        this.kind = kind;
+    public STUMP(String id, Point position, List<PImage> images) {
         this.id = id;
         this.position = position;
         this.images = images;
@@ -25,9 +24,6 @@ public class STUMP implements Entity_I{
         return id;
     }
 
-    public EntityKind getKind() {
-        return kind;
-    }
 
     public void setPosition(Point position) {
         this.position = position;
@@ -42,6 +38,11 @@ public class STUMP implements Entity_I{
     public int getImageIndex() {return imageIndex;}
 
     public void setImageIndex(int i) { imageIndex = i;}
+
+    @Override
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+
+    }
 
 
 }

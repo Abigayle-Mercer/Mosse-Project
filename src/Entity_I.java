@@ -45,13 +45,7 @@ public interface Entity_I {
         Random rand = new Random();
         return min + rand.nextInt(max-min);
     }
-
     public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore);
-
-
-
-
-
 
 
 }

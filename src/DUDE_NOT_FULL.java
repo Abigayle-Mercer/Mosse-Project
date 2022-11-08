@@ -5,8 +5,8 @@ import java.util.*;
 public class DUDE_NOT_FULL extends Dudes{
 
 
-    public DUDE_NOT_FULL(EntityKind kind, String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int resourceCount, int resourceLimit) {
-        super(kind, id, position, images, actionPeriod, animationPeriod, resourceCount, resourceLimit);
+    public DUDE_NOT_FULL(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int resourceCount, int resourceLimit) {
+        super(id, position, images, actionPeriod, animationPeriod, resourceCount, resourceLimit);
     }
 
     public void setResourceCount(int i) {
@@ -44,7 +44,7 @@ public class DUDE_NOT_FULL extends Dudes{
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
+        Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(Arrays.asList(TREE.class, SAPLING.class)));
 
         if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore, EntityKind.DUDE_FULL)) {
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
