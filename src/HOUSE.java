@@ -5,15 +5,14 @@ import processing.core.PImage;
 
 public class HOUSE implements Entity_I {
 
-    private final EntityKind kind;
+
     private final String id;
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
 
 
-    public HOUSE(EntityKind kind, String id, Point position, List<PImage> images) {
-        this.kind = kind;
+    public HOUSE(String id, Point position, List<PImage> images) {
         this.id = id;
         this.position = position;
         this.images = images;
@@ -25,9 +24,7 @@ public class HOUSE implements Entity_I {
         return id;
     }
 
-    public EntityKind getKind() {
-        return kind;
-    }
+
 
     public void setPosition(Point position) {
         this.position = position;
@@ -44,6 +41,8 @@ public class HOUSE implements Entity_I {
     public void setImageIndex(int i) { imageIndex = i;}
 
 
+    @Override
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {}
 
 
 

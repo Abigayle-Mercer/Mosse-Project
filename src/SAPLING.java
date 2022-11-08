@@ -44,6 +44,12 @@ public class SAPLING extends Plant{
     }
 
 
+    @Override
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), this.getActionPeriod());
+        scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
+    }
+
 
 }
 

@@ -54,7 +54,10 @@ public class OBSTACLE implements Animates{
 
 
 
-
+    @Override
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
+    }
 
 
 
