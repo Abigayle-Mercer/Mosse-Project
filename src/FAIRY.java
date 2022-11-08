@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class FAIRY extends Move implements Animates {
 
+    // this is a comment haha
     private final double animationPeriod;
 
 
