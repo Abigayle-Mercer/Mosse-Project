@@ -8,7 +8,7 @@ public class TREE extends Plant {
 
 
 
-    public TREE(EntityKind kind, String id, Point position, List<PImage> images,double actionPeriod, double animationPeriod, int health, int healthLimit) {
+    public TREE(String id, Point position, List<PImage> images,double actionPeriod, double animationPeriod, int health, int healthLimit) {
         super(id, position,  images,  actionPeriod, animationPeriod, health, healthLimit);
     }
 
@@ -17,14 +17,14 @@ public class TREE extends Plant {
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
 
-        if (transform(world, scheduler, imageStore, EntityKind.STUMP)) {
+        if (transform(world, scheduler, imageStore)) {
             super.executeActivity(world, imageStore, scheduler);
         }
     }
 
 
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
-       return super.transform(world, scheduler, imageStore, EntityKind.STUMP);
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+       return super.transform(world, scheduler, imageStore);
     }
 
     @Override

@@ -19,6 +19,8 @@ public interface Animates extends  Entity_I{
 
     double getAnimationPeriod();
 
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore);
+
     default Action createAnimationAction( int repeatCount) {
         return new Animation(this, null, null, repeatCount);
     }

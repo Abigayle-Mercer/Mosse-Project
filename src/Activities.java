@@ -45,6 +45,8 @@ public abstract class Activities implements Entity_I{
 
     public double getActionPeriod() {return actionPeriod;}
 
+    abstract public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore);
+
 
 
 

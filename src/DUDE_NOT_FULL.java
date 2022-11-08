@@ -33,20 +33,21 @@ public class DUDE_NOT_FULL extends Dudes{
     }
 
     @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         if (this.resourceCount >= this.resourceLimit) {
             scheduler.unscheduleAllEvents(this);
-            return super.transform(world, scheduler, imageStore, EntityKind.DUDE_FULL);
+            return super.transform(world, scheduler, imageStore);
         }
 
-        return true;
+        return false;
     }
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(Arrays.asList(TREE.class, SAPLING.class)));
 
-        if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore, EntityKind.DUDE_FULL)) {
+
+        if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore)) {
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
         }
     }

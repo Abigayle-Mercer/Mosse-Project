@@ -19,18 +19,18 @@ public class SAPLING extends Plant{
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         this.setHealth(this.getHealth() + 1);
-        if (transform(world, scheduler, imageStore, EntityKind.TREE)) {
+        if (transform(world, scheduler, imageStore)) {
             super.executeActivity(world, imageStore, scheduler);
         }
     }
 
     @Override
-    public boolean transform( WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+    public boolean transform( WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         if (this.getHealth() <= 0) {
-            return super.transform(world, scheduler, imageStore, EntityKind.STUMP);
+            return super.transform(world, scheduler, imageStore);
 
         } else if (this.getHealth() >= this.getHealthLimit()) {
-            Entity_I tree = new TREE(EntityKind.TREE, Functions.TREE_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.TREE_KEY), getNumFromRange(TREE_ACTION_MAX, TREE_ACTION_MIN), getNumFromRange(TREE_ANIMATION_MAX, TREE_ANIMATION_MIN), getIntFromRange(TREE_HEALTH_MAX, TREE_HEALTH_MIN), 0);
+            Entity_I tree = new TREE( Functions.TREE_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.TREE_KEY), getNumFromRange(TREE_ACTION_MAX, TREE_ACTION_MIN), getNumFromRange(TREE_ANIMATION_MAX, TREE_ANIMATION_MIN), getIntFromRange(TREE_HEALTH_MAX, TREE_HEALTH_MIN), 0);
 
             world.removeEntity(this, scheduler);
 

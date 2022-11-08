@@ -48,7 +48,7 @@ public abstract class Dudes extends Move implements Animates, Transformable {
     }
 
     @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         Entity_I dude;
         if (this instanceof DUDE_FULL) {
             dude = new DUDE_NOT_FULL(this.getId(), this.getPosition(), this.getImages(), this.getActionPeriod(), this.getAnimationPeriod(), 0, this.getResourceLimit());

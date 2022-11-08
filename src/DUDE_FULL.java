@@ -21,8 +21,8 @@ public class DUDE_FULL extends Dudes {
     }
 
     @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore, EntityKind kind) {
-        return super.transform(world, scheduler, imageStore, EntityKind.DUDE_NOT_FULL);
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        return super.transform(world, scheduler, imageStore);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class DUDE_FULL extends Dudes {
         Optional<Entity_I> fullTarget = world.findNearest(this.getPosition(), new ArrayList<>(List.of(HOUSE.class)));
 
         if (fullTarget.isPresent() && moveTo( world, fullTarget.get(), scheduler)) {
-            transform(world, scheduler, imageStore, EntityKind.STUMP);
+            transform(world, scheduler, imageStore);
         } else {
             scheduler.scheduleEvent( this, createActivityAction(world, imageStore), this.getActionPeriod());
         }
