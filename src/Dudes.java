@@ -1,5 +1,8 @@
 import processing.core.PImage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Dudes extends Move implements Animates, Transformable {
@@ -32,20 +35,39 @@ public abstract class Dudes extends Move implements Animates, Transformable {
 
     @Override
     public Point nextPosition(WorldModel world, Point destPos) {
-        int horiz = Integer.signum(destPos.getX() - this.getPosition().getX());
-        Point newPos = new Point(this.getPosition().getX() + horiz, this.getPosition().getY());
 
-        if (horiz == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != STUMP.class) {
-            int vert = Integer.signum(destPos.getY() - this.getPosition().getY());
-            newPos = new Point(this.getPosition().getX(), this.getPosition().getY() + vert);
-
-            if (vert == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != STUMP.class) {
-                newPos = this.getPosition();
-            }
-        }
-
-        return newPos;
+        PathingStrategy ps = new SingleStepPathingStrategy();
+        List<Point> path = ps.computePath(this.getPosition(), destPos,
+                (Point p) -> (world.getOccupancyCell(p).getClass() == STUMP.class) || (!world.isOccupied(p)),
+                this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
+        return path.get(0);
     }
+
+//        List<Point> l = new ArrayList<>(Arrays.asList());
+//
+//        while (l.get(0) != destPos) {
+//            PathingStrategy ps = new AStarPathingStrategy();
+//            l += LinkedList<Point> path =  ps.computePath();
+//        }
+//        return l;
+//
+//        }
+
+//
+//        int horiz = Integer.signum(destPos.getX() - this.getPosition().getX());
+//        Point newPos = new Point(this.getPosition().getX() + horiz, this.getPosition().getY());
+//
+//        if (horiz == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != STUMP.class) {
+//            int vert = Integer.signum(destPos.getY() - this.getPosition().getY());
+//            newPos = new Point(this.getPosition().getX(), this.getPosition().getY() + vert);
+//
+//            if (vert == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != STUMP.class) {
+//                newPos = this.getPosition();
+//            }
+//        }
+//
+//        return newPos;
+//    }
 
     @Override
     public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
