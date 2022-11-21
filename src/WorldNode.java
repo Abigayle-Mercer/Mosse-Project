@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class WorldNode {
     public int EstimatedDistanceToEnd;
     public int DistanceFromStart;
@@ -23,10 +25,15 @@ public class WorldNode {
 
         if (other instanceof WorldNode) {
             WorldNode worldNode = (WorldNode) other;
-            return this.Position == worldNode.Position;
+            return this.Position.equals(worldNode.Position);
         }
         return false;
 
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.Position);
     }
 
     public int getFvalue() {

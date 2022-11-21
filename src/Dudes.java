@@ -37,14 +37,14 @@ public abstract class Dudes extends Move implements Animates, Transformable {
     @Override
     public Point nextPosition(WorldModel world, Point destPos) {
         PathingStrategy ps = new AStarPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.getOccupancyCell(p).getClass() == STUMP.class) || (!world.isOccupied(p)),
+        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
                 this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
         return path.get(0);
     }
 
 //        PathingStrategy ps = new SingleStepPathingStrategy();
 //        List<Point> path = ps.computePath(this.getPosition(), destPos,
-//                (Point p) -> (world.getOccupancyCell(p).getClass() == STUMP.class) || (!world.isOccupied(p)),
+//                (Point p) -> (((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
 //                this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
 //        return path.get(0);
 //    }

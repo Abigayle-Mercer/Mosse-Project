@@ -14,47 +14,56 @@ public class AStarPathingStrategy
                                    Function<Point, Stream<Point>> potentialNeighbors) {
 
         PriorityQueue<WorldNode> OpenList = new PriorityQueue<WorldNode>(Comparator.comparing(WorldNode::getFvalue));
-        HashSet<WorldNode> ClosedList = new HashSet<WorldNode>( );
-        HashSet<WorldNode> ParralellOpenList = new HashSet<>();
+        HashSet<Point> ClosedList = new HashSet<>();
+        HashSet<Point> ParralellOpenList = new HashSet<>();
         WorldNode s = new WorldNode(start, end, start, null);
         OpenList.add(s);
-        ParralellOpenList.add(s);
+        ParralellOpenList.add(s.Position);
 
         while (!OpenList.isEmpty()) {
+            //System.out.println("1:   Start of OpenList.isEmpty() outer while loop");
             WorldNode current = OpenList.peek();
             if (withinReach.test(current.Position, end)) {
                 break;
             }
-            ParralellOpenList.remove(OpenList.peek());
+            ParralellOpenList.remove(OpenList.peek().Position);
             OpenList.remove(OpenList.peek());
-            if (ClosedList.contains(current)) {
-                // ignore it?
-            }
-            else {
-                ClosedList.add(current);
-                List<WorldNode> neighbors = potentialNeighbors.apply(current.Position).filter(canPassThrough).filter( (Point p) -> (!ClosedList.contains(p))).map(p -> new WorldNode(start, end, p, current))
-                        .collect(Collectors.toList());
-                for (WorldNode w : neighbors) {
-                    if (!ParralellOpenList.contains(w)) {
-                        OpenList.add(w);
-                        ParralellOpenList.add(w);
-                    }
-                    else {
-                        OpenList.removeIf((WorldNode p) -> (p.Position == w.Position) && (p.Fvalue > w.Fvalue));
-                    }
+            ClosedList.add(current.Position);
+            List<WorldNode> neighbors = potentialNeighbors.apply(current.Position)
+                    .filter(canPassThrough)
+                    .filter((Point p) -> (!ClosedList.contains(p)))
+                    .map(p -> new WorldNode(start, end, p, current))
+                    .toList();
+            for (WorldNode w : neighbors) {
+                //System.out.println("2:   Start of WorldNode neighbors for loop");
 
-                }
+                if (!ParralellOpenList.contains(w.Position)) {
+                    //System.out.println("3:   if ParralelleOpenList.contains(w) == true");
+                    OpenList.add(w);
+                        ParralellOpenList.add(w.Position);
+                    } else {
+                    //System.out.println("4:   if ParralelleOpenList.contains(w) == false");
+                    if (OpenList.removeIf((WorldNode p) -> (p.Position.equals(w.Position)) && (p.Fvalue < w.Fvalue))) {
+                            OpenList.add(w);
+                            //System.out.println("5:    found an item to replace in OpenList");
 
+                    }
+                    }
             }
+
+
         }
         WorldNode pointer = OpenList.peek();
         List<Point> path = new ArrayList<Point>();
-        while (pointer.Position != start) {
+        while (!pointer.Position.equals(start)) {
+            //System.out.println("6:    start of WhilePosition.equals(start) for loop");
             path.add(0, pointer.Position);
             pointer = pointer.Previous;
         }
         List<Point> returnpath = new ArrayList<Point>();
         returnpath.add(path.get(0));
+
+
         return returnpath;
 
 
