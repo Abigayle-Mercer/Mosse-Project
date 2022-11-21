@@ -13,6 +13,8 @@ public class AStarPathingStrategy
                                    BiPredicate<Point, Point> withinReach,
                                    Function<Point, Stream<Point>> potentialNeighbors) {
 
+        //System.out.println("Hi we got here");
+
 
         if (withinReach.test(start, end)) {
             List<Point> r = new ArrayList<>();

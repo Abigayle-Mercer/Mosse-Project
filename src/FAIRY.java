@@ -25,7 +25,7 @@ public class FAIRY extends Move implements Animates {
         return path.get(0);
     }
 
-
+//
 //        int horiz = Integer.signum(destPos.getX() - this.getPosition().getX());
 //        Point newPos = new Point(this.getPosition().getX() + horiz, this.getPosition().getY());
 //
@@ -39,7 +39,7 @@ public class FAIRY extends Move implements Animates {
 //        }
 //
 //        return newPos;
-
+//    }
 
     @Override
     public double getAnimationPeriod() {
