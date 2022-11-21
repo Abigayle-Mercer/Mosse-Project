@@ -125,4 +125,32 @@ public class PathingTests {
 
     }
 
+    @Test
+    public void testAStar5() {
+        boolean[][] grid = { {true, true, true, true, true, true},
+                {true, true, true, true, true, true},
+                {true, true, true, true, true, true},
+                {true, true, true, true, true, true},
+                {true, true, true, true, true, true},
+                {true, true, true, true, true, true},
+        };
+
+        List<Point> path = new ArrayList<>();
+        PathingStrategy ps = new AStarPathingStrategy();
+        Point start = new Point(0, 0);
+
+
+        List<Point> nextPoint = ps.computePath(start, new Point(5, 5),
+                (Point p ) -> (withinBounds(p, 6, 6) && grid[p.getY()][p.getX()]),
+                this::adjacent,
+                PathingStrategy.CARDINAL_NEIGHBORS);
+
+
+
+
+        assertEquals(path.size(), 0);
+
+    }
+
+
 }

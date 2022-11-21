@@ -13,6 +13,12 @@ public class AStarPathingStrategy
                                    BiPredicate<Point, Point> withinReach,
                                    Function<Point, Stream<Point>> potentialNeighbors) {
 
+
+        if (withinReach.test(start, end)) {
+            List<Point> r = new ArrayList<>();
+            return r;
+        }
+
         PriorityQueue<WorldNode> OpenList = new PriorityQueue<WorldNode>(Comparator.comparing(WorldNode::getFvalue));
         HashSet<Point> ClosedList = new HashSet<>();
         HashSet<Point> ParralellOpenList = new HashSet<>();
@@ -53,6 +59,9 @@ public class AStarPathingStrategy
 
 
         }
+
+
+
         WorldNode pointer = OpenList.peek();
         List<Point> path = new ArrayList<Point>();
         while (!pointer.Position.equals(start)) {
