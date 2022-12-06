@@ -2,7 +2,6 @@ package Pathing;
 
 import Starter_Classes.WorldNode;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -11,9 +10,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
+
 public class AStarPathingStrategy
         implements PathingStrategy
 {
+
     public List<Starter_Classes.Point> computePath(Starter_Classes.Point start, Starter_Classes.Point end, Predicate<Starter_Classes.Point> canPassThrough, BiPredicate<Starter_Classes.Point, Starter_Classes.Point> withinReach, Function<Starter_Classes.Point, Stream<Starter_Classes.Point>> potentialNeighbors) {
 
         //System.out.println("Hi we got here");
@@ -67,15 +69,15 @@ public class AStarPathingStrategy
 
 
 
-        WorldNode pointer = OpenList.peek();
-        List<Starter_Classes.Point> path = new ArrayList<Starter_Classes.Point>();
-        while (!pointer.Position.equals(start)) {
-            //System.out.println("6:    start of WhilePosition.equals(start) for loop");
-            path.add(0, pointer.Position);
-            pointer = pointer.Previous;
-        }
+//        WorldNode pointer = OpenList.peek();
+//        List<Starter_Classes.Point> path = new ArrayList<Starter_Classes.Point>();
+//        while (!pointer.Position.equals(start)) {
+//            //System.out.println("6:    start of WhilePosition.equals(start) for loop");
+//            path.add(0, pointer.Position);
+//            pointer = pointer.Previous;
+//        }
         List<Starter_Classes.Point> returnpath = new ArrayList<Starter_Classes.Point>();
-        returnpath.add(path.get(0));
+        returnpath.add(OpenList.size() > 0 ? OpenList.peek().trace().get(0) : start);
 
 
         return returnpath;
