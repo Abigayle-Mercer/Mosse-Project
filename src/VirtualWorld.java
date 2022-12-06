@@ -69,22 +69,36 @@ public final class VirtualWorld extends PApplet {
 
     // Just for debugging and for P5
     // Be sure to refactor this method as appropriate
+
+    public void overlayArea(Point p)
+    {
+        for(int x =-2; x < 3; x++)
+        {
+            for( int y =-2; y<3; y++)
+            {
+                Point tp = new Point(p.getX()+x, p.getY()+y);
+                if(world.withinBounds(tp))
+                {
+                    world.setBackgroundCell(tp,new Background("tmp", imageStore.getImageList("tmp")));
+                }
+            }
+        }
+    }
     public void mousePressed() {
         Point pressed = mouseToPoint();
         System.out.println("CLICK! " + pressed.getX() + ", " + pressed.getY());
 
         Optional<Entity_I> entityOptional = world.getOccupant(pressed);
-        if (entityOptional.isPresent()) {
-            Entity_I entity = entityOptional.get();
-            if (entityOptional.get() instanceof Plant) {
-                Plant plant = (Plant) entityOptional.get();
-
-                System.out.println(entity.getId() + ": " + entity.getClass() + " : " + plant.getHealth());
-            }
-            else {
-                System.out.println(entity.getId() + ": " + entity.getClass() + " : 0");
-
-            }
+        if (!entityOptional.isPresent()) {
+            overlayArea(pressed);
+//            world.setBackgroundCell(pressed,new Background("tmp", imageStore.getImageList("tmp")));
+//            Entity_I entity = entityOptional.get();
+            // activate!
+//            if (entityOptional.get() instanceof Ayaan) {
+//
+//
+//                System.out.println(entity.getId() + ": " + entity.getClass() + " : " + plant.getHealth());
+//            }
         }
 
     }
