@@ -44,8 +44,8 @@ public abstract class Dudes extends Move implements Animates, Transformable {
     @Override
     public Point nextPosition(WorldModel world, Point destPos) {
         PathingStrategy ps = new AStarPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
-                this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
+        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
+                Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
         return path.get(0);
     }
 

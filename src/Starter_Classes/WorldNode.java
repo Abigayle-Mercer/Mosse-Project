@@ -1,5 +1,7 @@
 package Starter_Classes;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class WorldNode {
@@ -45,6 +47,22 @@ public class WorldNode {
 
     private int distanceFunc(Point p1, Point p2) {
         return Math.abs(p2.getY() - p1.getY()) + Math.abs(p2.getX() - p1.getX());
+    }
+
+    public List<Point> trace()
+    {
+        LinkedList<Point> result = new LinkedList<Point>();
+        result.add(this.Position);
+        WorldNode temp = this.Previous;
+        WorldNode temp_prior = this;
+        while(temp != null)
+        {
+//                if(temp_prior.getPos().adjacent(temp.getPos()))
+            if(temp.Previous != null)
+                result.add(0,temp.Position);
+            temp = temp.Previous;
+        }
+        return result.stream().toList();
     }
 
 }
