@@ -1,5 +1,11 @@
+package Starter_Classes;
+
 import Entities.*;
 import Entity_Attributes.Entity_I;
+import Starter_Classes.Background;
+import Starter_Classes.EventScheduler;
+import Starter_Classes.ImageStore;
+import Starter_Classes.Point;
 import processing.core.PImage;
 
 import java.util.*;

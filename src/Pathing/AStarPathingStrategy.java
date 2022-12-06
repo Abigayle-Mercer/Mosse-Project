@@ -47,7 +47,7 @@ public class AStarPathingStrategy
                     .map(p -> new WorldNode(start, end, p, current))
                     .toList();
             for (WorldNode w : neighbors) {
-                //System.out.println("2:   Start of WorldNode neighbors for loop");
+                //System.out.println("2:   Start of Starter_Classes.WorldNode neighbors for loop");
 
                 if (!ParralellOpenList.contains(w.Position)) {
                     //System.out.println("3:   if ParralelleOpenList.contains(w) == true");

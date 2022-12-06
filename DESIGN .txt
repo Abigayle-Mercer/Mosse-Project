@@ -1,75 +1,75 @@
-Action:
-executeAnimationAction - moved from Functions, Action was in the name as well as multiple references to
-Action specific data (cohesion), event scheduler is a parameter but only has method access
+Starter_Classes.Action:
+executeAnimationAction - moved from Starter_Classes.Functions, Starter_Classes.Action was in the name as well as multiple references to
+Starter_Classes.Action specific data (cohesion), event scheduler is a parameter but only has method access
 
-executeAction - moved from Functions, Action was in the name and data/methods specific to the action class was
+executeAction - moved from Starter_Classes.Functions, Starter_Classes.Action was in the name and data/methods specific to the action class was
 referenced in the body (cohesion)
 
-executeActivityAction - moved from Functions, Action was in the name and there were many references to
+executeActivityAction - moved from Starter_Classes.Functions, Starter_Classes.Action was in the name and there were many references to
 data/methods specific to the action class (cohesion)
 
-Background:
+Starter_Classes.Background:
 getCurrentImage - okay honestly I knew I had to put something in this class but I wasn't sure what but
 then I realized I could overload getCurrentImage by splitting it into two methods and this one just takes
-a background object as its paramter so it made perfect sense to put this one in Background because it only
+a background object as its paramter so it made perfect sense to put this one in Starter_Classes.Background because it only
 accesses background data (cohesion)
 
 Entity:
-nextImage - moved from Functions, only referenced entity class data (cohesion) and this allowed the function
+nextImage - moved from Starter_Classes.Functions, only referenced entity class data (cohesion) and this allowed the function
 to take no parameters
 
-executeSaplingActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
+executeSaplingActivity - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
 
-executeTreeActivity- moved from Functions, multiple references to entity class data (cohesion), also it just makes
+executeTreeActivity- moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
 
-executeDudeNotFullActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
+executeDudeNotFullActivity - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
 
-executeDudeFullActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
+executeDudeFullActivity - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
 
-moveToFull - moved from Functions, multiple references to entity class data (cohesion)
+moveToFull - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion)
 
-transformFull - moved from Functions, only references entity class data (cohesion), and it makes sense
+transformFull - moved from Starter_Classes.Functions, only references entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
 
 
-getAnimationPeriod - moved from Functions, deals exclusively with entity class data (cohesion)
+getAnimationPeriod - moved from Starter_Classes.Functions, deals exclusively with entity class data (cohesion)
 
-transformNotFull - moved from Functions, deals exclusively with entity class data (cohesion), and it makes sense
+transformNotFull - moved from Starter_Classes.Functions, deals exclusively with entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
 
-transformPlant - moved from Functions, multiple references to entity class data (cohesion), and it makes sense
+transformPlant - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
 
-transformTree - moved from Functions, multiple references to entity class data (cohesion), and it makes sense
+transformTree - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
 
-transformSapling - moved from Functions, multiple references to entity class data (cohesion), and it makes sense
+transformSapling - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), and it makes sense
 that entities would deal with transforming themselves
 
-scheduleActions - moved from Functions, this one was conflicting because the name makes it sound like it should go
+scheduleActions - moved from Starter_Classes.Functions, this one was conflicting because the name makes it sound like it should go
 in the eventscheduler, but it only called event scheduler method, whereas it referenced entity specific data
 
-moveEntity - moved from Functions, exclusively makes references to entity specific data and it makes sense
+moveEntity - moved from Starter_Classes.Functions, exclusively makes references to entity specific data and it makes sense
 that entities could move themselves
 
-nextPositionFairy - moved from Functions, this one was tricky, it makese reference to entity specific data but
+nextPositionFairy - moved from Starter_Classes.Functions, this one was tricky, it makese reference to entity specific data but
 part of that data is a point so it makes reference to point specific data (x, y). Ultimately i decided that the point
 really didn't need access to entity data, in terms of heirarchy i would put it lower than entity.
 
-moveToFairy - moved from Functions, exclusively makes references to entity specific data and it makes sense
+moveToFairy - moved from Starter_Classes.Functions, exclusively makes references to entity specific data and it makes sense
 that entities could move themselves
 
-removeEntity - moved from Functions, makes one reference to entity specific data, i guess it makes sense that
+removeEntity - moved from Starter_Classes.Functions, makes one reference to entity specific data, i guess it makes sense that
 entities could remove themselves
 
-executeFairyActivity - moved from Functions, multiple references to entity class data (cohesion), also it just makes
+executeFairyActivity - moved from Starter_Classes.Functions, multiple references to entity class data (cohesion), also it just makes
 sense that the entities would execute their own activities.
 
-tryAddEntity - moved from Functions, deals exclusively with entity class data (cohesion)
+tryAddEntity - moved from Starter_Classes.Functions, deals exclusively with entity class data (cohesion)
 
 nextPositionDude - moved from functions, references both entity and point class data, in terms of heirarchy
 point doesn't need access to entity data; entity relys on point not the other way around
@@ -81,7 +81,7 @@ overloaded so that this getCurrentImage method only takes in entity objects and 
 
 createAnimationAction - takes in one entity object and an integer so it might as well go in entity, theres no
 integer class to put it into. Even though it doesn't really access entity data or methods, it removes atleast
-one of the parameters so its more readable when calling, no need for Functions.
+one of the parameters so its more readable when calling, no need for Starter_Classes.Functions.
 
 createActivityAction - I thought about putting this in world, since entity doesn't rely on world objects why should
 I put a method in here that calls it. But, while it doesn't access entity data or methods, it doesn't access
@@ -99,33 +99,33 @@ getIntFromRange - only used in this file
 getNumFromRange - only used in this file
 
 
-Event:
-removePendingEvent - I saw that I had to put something in the Event class and this was the only function that
-referenced Event data specifically, even though it also accesses EventScheduler data, gotta put it somehwere
+Starter_Classes.Event:
+removePendingEvent - I saw that I had to put something in the Starter_Classes.Event class and this was the only function that
+referenced Starter_Classes.Event data specifically, even though it also accesses Starter_Classes.EventScheduler data, gotta put it somehwere
 
-EventScheduler:
-scheduleEvent - moved from Functions, well its in the name, and it exclusively deals with EventScheduler data
+Starter_Classes.EventScheduler:
+scheduleEvent - moved from Starter_Classes.Functions, well its in the name, and it exclusively deals with Starter_Classes.EventScheduler data
 (cohesion)
-unscheduleAllEvents - moved from Functions, deals with data specific to EventScheduler and the name makes sense
-updateOnTime - movd from Functions, deals exclusively with EventScheduler specific data and it takes only one
+unscheduleAllEvents - moved from Starter_Classes.Functions, deals with data specific to Starter_Classes.EventScheduler and the name makes sense
+updateOnTime - movd from Starter_Classes.Functions, deals exclusively with Starter_Classes.EventScheduler specific data and it takes only one
 double parameter rather than a class
 
-ImageStore:
-getImageList - moved from Functions, its in the name and deals exclusively with ImageStore data
-loadImages - moved from Functions, its in the name and only makes one reference to ImageStore data
+Starter_Classes.ImageStore:
+getImageList - moved from Starter_Classes.Functions, its in the name and deals exclusively with Starter_Classes.ImageStore data
+loadImages - moved from Starter_Classes.Functions, its in the name and only makes one reference to Starter_Classes.ImageStore data
 processImageLine - only used in this file
 setAlpha - only used in this file
 getImages - only used in this file
 
-Point:
+Starter_Classes.Point:
 
-Viewport:
-contains - moved from Functions, this function deals with data from both Point and Viewport, so for me it came down
+Starter_Classes.Viewport:
+contains - moved from Starter_Classes.Functions, this function deals with data from both Starter_Classes.Point and Starter_Classes.Viewport, so for me it came down
 to what makese sense with the title. point contains viewport? or viewport contains point? the latter makes more
 grammatical sense to me.
-shift - moved from Functions, deals exclusively with Viewport specific data, now it only takes two ints
-worldToViewport - moved from Functions, its in the name and it only deals with ViewPort specif data  (cohesion)
-viewportToWorld - moved from Functions, its in the name and it only deals with ViewPort specif data  (cohesion)
+shift - moved from Starter_Classes.Functions, deals exclusively with Starter_Classes.Viewport specific data, now it only takes two ints
+worldToViewport - moved from Starter_Classes.Functions, its in the name and it only deals with ViewPort specif data  (cohesion)
+viewportToWorld - moved from Starter_Classes.Functions, its in the name and it only deals with ViewPort specif data  (cohesion)
 update - onlu used in this file
 
 
@@ -133,66 +133,66 @@ VirtualWorld:
 
 
 
-WorldModel:
+Starter_Classes.WorldModel:
 
 getOccupancyCell - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel data
+to Starter_Classes.WorldModel data
 
 setOccupancyCell - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel data
+to Starter_Classes.WorldModel data
 
-parseBackgroundRow - only makese references to WorldModel data
+parseBackgroundRow - only makese references to Starter_Classes.WorldModel data
 
 setBackgroundCell - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel data. Now it does look like background data might be access but honestly there's no method in backgorund
+to Starter_Classes.WorldModel data. Now it does look like background data might be access but honestly there's no method in backgorund
 that specifies what to return if it's passed two points in brackets so I didn't want to assume background
 data was being meddled with here.
 
 getBackgroundCell - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel dataNow it does look like background data might be access but honestly there's no method in backgorund
+to Starter_Classes.WorldModel dataNow it does look like background data might be access but honestly there's no method in backgorund
 that specifies what to return if it's passed two points in brackets so I didn't want to assume background
 data was being meddled with here.
 
-parseSaveFile - only makes references to WorldModel data (cohesion)
+parseSaveFile - only makes references to Starter_Classes.WorldModel data (cohesion)
 
-load - only makes references to WorldModel data (cohesion)
+load - only makes references to Starter_Classes.WorldModel data (cohesion)
 
-getOccupant - this method takes both Point and WorldModel as paremeters, and doesn't really access the data of either,
+getOccupant - this method takes both Starter_Classes.Point and Starter_Classes.WorldModel as paremeters, and doesn't really access the data of either,
 just WorldModels methods, due to the heriarchy of these classes, point shouldn't concern itself with worldmodel methods.
 
 withinBounds - references both point and worldmodel data but it makese sense that point shouldn't have access
-to WorldModel data
+to Starter_Classes.WorldModel data
 
-scheduleActions - only references WorldModel data once
+scheduleActions - only references Starter_Classes.WorldModel data once
 
 findNearest - wasn't really sure on this one, calls both entity and worldmodel specific data but putting it in
 Worldview removes need for one paramter whereas putting it in entity woulnd't because it creates the entity in
 the body of the method
 
 parseSapling - It wasn't very obvious where to put the parse functions, I just decided that
-because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseDude - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseDude - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseFairy - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseFairy - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseTree - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseTree - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseObstacle - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseObstacle - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseHouse - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseHouse - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseStump - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseStump - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
-parseEntity - because WorldModel came first in the parameter list, and because WorldModel seemed like the paremter
-that was the most encompassing class, like yeah the WorldModel should parse its entities right?
+parseEntity - because Starter_Classes.WorldModel came first in the parameter list, and because Starter_Classes.WorldModel seemed like the paremter
+that was the most encompassing class, like yeah the Starter_Classes.WorldModel should parse its entities right?
 
 removeEntityAt - I was conflicted on this method because it calls class specific data from both world and entity
 but ultimately I realized that the worldModel class relies on entity, not the other way around, so entity doesn't
@@ -204,12 +204,12 @@ methods so
 isOccupied - takes in a worldmodel and point object, but uses worldmodel methods so due to the heriarchy of
 these classes it makes sense that point shouldn't concern itself with worldmodel methods.
 
-addEntity - moved from Functions, deals with data specfic to both WorldModel and Entity, but worldmodel relies
+addEntity - moved from Starter_Classes.Functions, deals with data specfic to both Starter_Classes.WorldModel and Entity, but worldmodel relies
 entity, not the other way around, so the lesser of two evils is for world to access entity data rather than
 entity to access world data.
 
 createFairy - only used in this file, though it doesn't actually deal with entity data, it'll make my code
-more readable to put it in this file (no .Functions)
+more readable to put it in this file (no .Starter_Classes.Functions)
 
 createObstacle - only used in this file
 
@@ -220,8 +220,8 @@ nearestEntity - only used in this file
 distanceSquared - only used in this file
 
 
-WorldView:
-shiftView - contains multiple references to WorldView specific data (cohesion) while it does call upon viewport
+Starter_Classes.WorldView:
+shiftView - contains multiple references to Starter_Classes.WorldView specific data (cohesion) while it does call upon viewport
 data and methods as well, worldView relys on viewPort, not the other way around, so viewport shouldn't concern
 itself with worldView data.
 
@@ -232,7 +232,7 @@ drawBackground - acceses worldview specific data
 
 entities - acceses worldview specific data
 
-Functions:
+Starter_Classes.Functions:
 createTree - this function is used in two different files, but doesn't actually access data thats specfific to those class
 objects, so both files deserve equal access to it
 

@@ -1,3 +1,5 @@
+package Starter_Classes;
+
 import java.util.*;
 
 import processing.core.PImage;
@@ -35,7 +37,7 @@ public final class Functions {
 
 
 //    public static PImage getCurrentImage(Object object) { // Turn into two overloaded methods
-//        if (object instanceof Background background) {
+//        if (object instanceof Starter_Classes.Background background) {
 //            return background.images.get(background.imageIndex);
 //        } else if (object instanceof Entity entity) {
 //            return entity.images.get(entity.imageIndex % entity.images.size());

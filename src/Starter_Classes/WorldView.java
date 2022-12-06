@@ -1,4 +1,9 @@
+package Starter_Classes;
+
 import Entity_Attributes.Entity_I;
+import Starter_Classes.Point;
+import Starter_Classes.Viewport;
+import Starter_Classes.WorldModel;
 import processing.core.PApplet;
 import processing.core.PImage;
 

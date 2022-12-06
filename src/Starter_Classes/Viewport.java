@@ -1,3 +1,7 @@
+package Starter_Classes;
+
+import Starter_Classes.Point;
+
 public final class Viewport {
     private int row;
     private int col;

@@ -1,3 +1,5 @@
+package Starter_Classes;
+
 import java.util.Objects;
 
 public class WorldNode {

@@ -1,7 +1,10 @@
+package Starter_Classes;
+
 import Entity_Attributes.Animates;
 import Entity_Attributes.Entity_I;
+import Starter_Classes.Action;
 
-public class Animation extends Action{
+public class Animation extends Action {
     public Animation(Entity_I entity, WorldModel world, ImageStore imageStore, int repeatCount) {
         super(entity, world, imageStore, repeatCount);
     }

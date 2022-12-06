@@ -1,6 +1,9 @@
-import Entity_Attributes.Activities;
+package Starter_Classes;
 
-public class Activity extends Action{
+import Entity_Attributes.Activities;
+import Starter_Classes.Action;
+
+public class Activity extends Action {
     public Activity(Activities entity, WorldModel world, ImageStore imageStore, int repeatCount) {
         super(entity, world, imageStore, repeatCount);
     }

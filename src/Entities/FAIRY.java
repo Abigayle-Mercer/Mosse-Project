@@ -33,11 +33,11 @@ public class FAIRY extends Move implements Animates {
 
 //
 //        int horiz = Integer.signum(destPos.getX() - this.getPosition().getX());
-//        Point newPos = new Point(this.getPosition().getX() + horiz, this.getPosition().getY());
+//        Starter_Classes.Point newPos = new Starter_Classes.Point(this.getPosition().getX() + horiz, this.getPosition().getY());
 //
 //        if (horiz == 0 || world.isOccupied(newPos)) {
 //            int vert = Integer.signum(destPos.getY() - this.getPosition().getY());
-//            newPos = new Point(this.getPosition().getX(), this.getPosition().getY() + vert);
+//            newPos = new Starter_Classes.Point(this.getPosition().getX(), this.getPosition().getY() + vert);
 //
 //            if (vert == 0 || world.isOccupied(newPos)) {
 //                newPos = this.getPosition();

@@ -1,4 +1,9 @@
+package Starter_Classes;
+
 import Entity_Attributes.Entity_I;
+import Starter_Classes.Action;
+import Starter_Classes.Event;
+import Starter_Classes.EventComparator;
 
 import java.util.*;
 

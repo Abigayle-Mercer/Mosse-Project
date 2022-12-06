@@ -1,5 +1,8 @@
+package Tests;
+
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,7 +73,7 @@ public class WorldTests {
             VirtualWorld.headlessMain(new String[]{"Entities:\noops _ 0 0"}, 1)
         );
 
-        assertDoesNotThrow(() -> VirtualWorld.headlessMain(new String[]{"Rows:\n1"}, 1));
+        Assertions.assertDoesNotThrow(() -> VirtualWorld.headlessMain(new String[]{"Rows:\n1"}, 1));
 
     }
 

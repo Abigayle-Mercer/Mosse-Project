@@ -1,10 +1,12 @@
+package Starter_Classes;
+
 import Entity_Attributes.Entity_I;
 
 import java.util.List;
 
 /**
  * An event is made up of an Entity that is taking an
- * Action a specified time.
+ * Starter_Classes.Action a specified time.
  */
 public final class Event {
     private final Action action;

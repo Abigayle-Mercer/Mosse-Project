@@ -1,9 +1,12 @@
+package Tests;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Pathing.AStarPathingStrategy;
 import Pathing.PathingStrategy;
 import Pathing.SingleStepPathingStrategy;
+import Starter_Classes.Point;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

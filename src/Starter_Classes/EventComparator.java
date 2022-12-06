@@ -1,3 +1,7 @@
+package Starter_Classes;
+
+import Starter_Classes.Event;
+
 import java.util.Comparator;
 
 public final class EventComparator implements Comparator<Event> {

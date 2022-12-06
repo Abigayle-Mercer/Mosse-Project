@@ -1,3 +1,5 @@
+package Starter_Classes;
+
 /**
  * A simple class representing a location in 2D space.
  */

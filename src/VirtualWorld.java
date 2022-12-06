@@ -4,6 +4,7 @@ import java.util.*;
 
 import Entity_Attributes.Entity_I;
 import Entity_Attributes.Plant;
+import Starter_Classes.*;
 import processing.core.*;
 
 public final class VirtualWorld extends PApplet {
