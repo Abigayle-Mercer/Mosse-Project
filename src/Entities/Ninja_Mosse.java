@@ -1,5 +1,7 @@
 package Entities;
 
+import java.util.Random;
+
 import Entity_Attributes.*;
 import Pathing.AStarPathingStrategy;
 import Pathing.PathingStrategy;
@@ -20,10 +22,12 @@ public class Ninja_Mosse extends Move implements Animates, Transformable {
 
 
 
-    public Ninja_Mosse(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int health) {
+    public Ninja_Mosse(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
         super(id, position, images, actionPeriod);
         this.animationPeriod = animationPeriod;
-        this.health = health;
+
+        Random rand = new Random(); //instance of random class
+        this.health = rand.nextInt(4, 9);
 
 
     }
