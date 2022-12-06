@@ -2,6 +2,11 @@ package Entities;
 
 import java.util.*;
 
+import Entity_Attributes.Entity_I;
+import Starter_Classes.EventScheduler;
+import Starter_Classes.ImageStore;
+import Starter_Classes.Point;
+import Starter_Classes.WorldModel;
 import processing.core.PImage;
 
 

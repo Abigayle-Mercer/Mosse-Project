@@ -1,5 +1,7 @@
 package Pathing;
 
+import Starter_Classes.Point;
+
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;

@@ -2,9 +2,12 @@ package Entities;
 
 import Entities.SAPLING;
 import Entities.STUMP;
+import Entity_Attributes.Animates;
+import Entity_Attributes.Entity_I;
 import Entity_Attributes.Move;
 import Pathing.AStarPathingStrategy;
 import Pathing.PathingStrategy;
+import Starter_Classes.*;
 import processing.core.PImage;
 
 import java.util.ArrayList;

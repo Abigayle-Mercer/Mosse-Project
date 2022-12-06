@@ -1,6 +1,7 @@
 package Entity_Attributes;
 
 import Entities.STUMP;
+import Starter_Classes.*;
 import processing.core.PImage;
 
 import java.util.List;
@@ -11,14 +12,14 @@ import java.util.List;
 public abstract class Plant extends Activities implements Transformable, Animates {
 
 
-    static final double TREE_ANIMATION_MAX = 0.600;
-    static final double TREE_ANIMATION_MIN = 0.050;
-    static final double TREE_ACTION_MAX = 1.400;
-    static final double TREE_ACTION_MIN = 1.000;
+    protected static final double TREE_ANIMATION_MAX = 0.600;
+    protected static final double TREE_ANIMATION_MIN = 0.050;
+    protected static final double TREE_ACTION_MAX = 1.400;
+    protected static final double TREE_ACTION_MIN = 1.000;
 
 
-    static final int TREE_HEALTH_MAX = 3;
-    static final int TREE_HEALTH_MIN = 1;
+    protected static final int TREE_HEALTH_MAX = 3;
+    protected static final int TREE_HEALTH_MIN = 1;
 
     private int health;
     private final int healthLimit;

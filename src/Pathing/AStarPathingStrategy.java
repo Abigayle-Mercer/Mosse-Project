@@ -1,5 +1,7 @@
 package Pathing;
 
+import Starter_Classes.WorldNode;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -12,22 +14,19 @@ import java.util.stream.Stream;
 public class AStarPathingStrategy
         implements PathingStrategy
 {
-    public List<Point> computePath(Point start, Point end,
-                                   Predicate<Point> canPassThrough,
-                                   BiPredicate<Point, Point> withinReach,
-                                   Function<Point, Stream<Point>> potentialNeighbors) {
+    public List<Starter_Classes.Point> computePath(Starter_Classes.Point start, Starter_Classes.Point end, Predicate<Starter_Classes.Point> canPassThrough, BiPredicate<Starter_Classes.Point, Starter_Classes.Point> withinReach, Function<Starter_Classes.Point, Stream<Starter_Classes.Point>> potentialNeighbors) {
 
         //System.out.println("Hi we got here");
 
 
         if (withinReach.test(start, end)) {
-            List<Point> r = new ArrayList<>();
+            List<Starter_Classes.Point> r = new ArrayList<>();
             return r;
         }
 
         PriorityQueue<WorldNode> OpenList = new PriorityQueue<WorldNode>(Comparator.comparing(WorldNode::getFvalue));
-        HashSet<Point> ClosedList = new HashSet<>();
-        HashSet<Point> ParralellOpenList = new HashSet<>();
+        HashSet<Starter_Classes.Point> ClosedList = new HashSet<>();
+        HashSet<Starter_Classes.Point> ParralellOpenList = new HashSet<>();
         WorldNode s = new WorldNode(start, end, start, null);
         OpenList.add(s);
         ParralellOpenList.add(s.Position);
@@ -43,7 +42,7 @@ public class AStarPathingStrategy
             ClosedList.add(current.Position);
             List<WorldNode> neighbors = potentialNeighbors.apply(current.Position)
                     .filter(canPassThrough)
-                    .filter((Point p) -> (!ClosedList.contains(p)))
+                    .filter((Starter_Classes.Point p) -> (!ClosedList.contains(p)))
                     .map(p -> new WorldNode(start, end, p, current))
                     .toList();
             for (WorldNode w : neighbors) {
@@ -69,13 +68,13 @@ public class AStarPathingStrategy
 
 
         WorldNode pointer = OpenList.peek();
-        List<Point> path = new ArrayList<Point>();
+        List<Starter_Classes.Point> path = new ArrayList<Starter_Classes.Point>();
         while (!pointer.Position.equals(start)) {
             //System.out.println("6:    start of WhilePosition.equals(start) for loop");
             path.add(0, pointer.Position);
             pointer = pointer.Previous;
         }
-        List<Point> returnpath = new ArrayList<Point>();
+        List<Starter_Classes.Point> returnpath = new ArrayList<Starter_Classes.Point>();
         returnpath.add(path.get(0));
 
 

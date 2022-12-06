@@ -1,7 +1,14 @@
 package Entity_Attributes;
 
+import Entities.DUDE_FULL;
+import Entities.DUDE_NOT_FULL;
+import Entities.STUMP;
 import Pathing.AStarPathingStrategy;
 import Pathing.PathingStrategy;
+import Starter_Classes.EventScheduler;
+import Starter_Classes.ImageStore;
+import Starter_Classes.Point;
+import Starter_Classes.WorldModel;
 import processing.core.PImage;
 
 import java.util.List;

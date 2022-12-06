@@ -1,6 +1,7 @@
 package Entity_Attributes;
 
 import Entity_Attributes.Entity_I;
+import Starter_Classes.*;
 import processing.core.PImage;
 
 import java.util.List;
