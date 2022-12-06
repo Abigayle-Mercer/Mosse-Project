@@ -1,3 +1,5 @@
+package Entity_Attributes;
+
 import processing.core.PImage;
 
 import java.util.List;

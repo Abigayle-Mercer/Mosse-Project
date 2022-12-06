@@ -1,3 +1,4 @@
+import Entity_Attributes.Entity_I;
 import processing.core.PApplet;
 import processing.core.PImage;
 

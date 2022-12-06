@@ -1,3 +1,5 @@
+import Entity_Attributes.Entity_I;
+
 /**
  * An action that can be taken by an entity
  */

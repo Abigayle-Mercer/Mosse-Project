@@ -1,8 +1,11 @@
+package Entities;
+
+import Entities.TREE;
 import processing.core.PImage;
 
 import java.util.*;
 
-public class SAPLING extends Plant{
+public class SAPLING extends Plant {
 
     public static final double SAPLING_ACTION_ANIMATION_PERIOD = 1.000; // have to be in sync since grows and gains health at same time
     public static final int SAPLING_HEALTH_LIMIT = 5;
@@ -25,12 +28,12 @@ public class SAPLING extends Plant{
     }
 
     @Override
-    public boolean transform( WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         if (this.getHealth() <= 0) {
             return super.transform(world, scheduler, imageStore);
 
         } else if (this.getHealth() >= this.getHealthLimit()) {
-            Entity_I tree = new TREE( Functions.TREE_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.TREE_KEY), getNumFromRange(TREE_ACTION_MAX, TREE_ACTION_MIN), getNumFromRange(TREE_ANIMATION_MAX, TREE_ANIMATION_MIN), getIntFromRange(TREE_HEALTH_MAX, TREE_HEALTH_MIN), 0);
+            Entity_I tree = new TREE( Functions.TREE_KEY + "_" + this.getId(), this.getPosition(), imageStore.getImageList(Functions.TREE_KEY), getNumFromRange(Plant.TREE_ACTION_MAX, Plant.TREE_ACTION_MIN), getNumFromRange(Plant.TREE_ANIMATION_MAX, Plant.TREE_ANIMATION_MIN), getIntFromRange(Plant.TREE_HEALTH_MAX, Plant.TREE_HEALTH_MIN), 0);
 
             world.removeEntity(this, scheduler);
 

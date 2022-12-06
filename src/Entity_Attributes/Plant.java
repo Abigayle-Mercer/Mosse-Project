@@ -1,3 +1,6 @@
+package Entity_Attributes;
+
+import Entities.STUMP;
 import processing.core.PImage;
 
 import java.util.List;

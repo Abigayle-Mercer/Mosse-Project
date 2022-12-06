@@ -1,3 +1,5 @@
+import Entities.*;
+import Entity_Attributes.Entity_I;
 import processing.core.PImage;
 
 import java.util.*;

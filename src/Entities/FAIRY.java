@@ -1,9 +1,15 @@
+package Entities;
+
+import Entities.SAPLING;
+import Entities.STUMP;
+import Entity_Attributes.Move;
+import Pathing.AStarPathingStrategy;
+import Pathing.PathingStrategy;
 import processing.core.PImage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class FAIRY extends Move implements Animates {
 

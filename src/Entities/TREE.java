@@ -1,3 +1,5 @@
+package Entities;
+
 import processing.core.PImage;
 
 import java.util.*;
@@ -8,7 +10,7 @@ public class TREE extends Plant {
 
 
 
-    public TREE(String id, Point position, List<PImage> images,double actionPeriod, double animationPeriod, int health, int healthLimit) {
+    public TREE(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int health, int healthLimit) {
         super(id, position,  images,  actionPeriod, animationPeriod, health, healthLimit);
     }
 

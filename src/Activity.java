@@ -1,3 +1,5 @@
+import Entity_Attributes.Activities;
+
 public class Activity extends Action{
     public Activity(Activities entity, WorldModel world, ImageStore imageStore, int repeatCount) {
         super(entity, world, imageStore, repeatCount);

@@ -1,33 +1,30 @@
+package Entities;
+
 import processing.core.PImage;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
-public class OBSTACLE implements Animates{
-
-
+public class STUMP implements Entity_I {
 
     private final String id;
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
 
+    // comment
 
-    private final double animationPeriod;
-
-
-    public OBSTACLE(String id, Point position, List<PImage> images, double animationPeriod) {
+    public STUMP(String id, Point position, List<PImage> images) {
         this.id = id;
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
-        this.animationPeriod = animationPeriod;
     }
 
 
     public String getId() {
         return id;
     }
-
 
 
     public void setPosition(Point position) {
@@ -44,21 +41,10 @@ public class OBSTACLE implements Animates{
 
     public void setImageIndex(int i) { imageIndex = i;}
 
-    public double getAnimationPeriod() {
-        return animationPeriod;
-    }
-
-
-
-
     @Override
     public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-        scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
+
     }
-
-
-
-
 
 
 }

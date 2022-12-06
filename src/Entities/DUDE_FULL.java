@@ -1,3 +1,6 @@
+package Entities;
+
+import Entity_Attributes.Dudes;
 import processing.core.PImage;
 
 import java.util.ArrayList;

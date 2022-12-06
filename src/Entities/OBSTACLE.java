@@ -1,9 +1,11 @@
-import java.util.*;
+package Entities;
 
 import processing.core.PImage;
 
+import java.util.*;
 
-public class HOUSE implements Entity_I {
+public class OBSTACLE implements Animates {
+
 
 
     private final String id;
@@ -12,11 +14,15 @@ public class HOUSE implements Entity_I {
     private int imageIndex;
 
 
-    public HOUSE(String id, Point position, List<PImage> images) {
+    private final double animationPeriod;
+
+
+    public OBSTACLE(String id, Point position, List<PImage> images, double animationPeriod) {
         this.id = id;
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
+        this.animationPeriod = animationPeriod;
     }
 
 
@@ -40,11 +46,21 @@ public class HOUSE implements Entity_I {
 
     public void setImageIndex(int i) { imageIndex = i;}
 
+    public double getAnimationPeriod() {
+        return animationPeriod;
+    }
+
+
+
 
     @Override
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {}
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
+    }
+
+
+
 
 
 
 }
-

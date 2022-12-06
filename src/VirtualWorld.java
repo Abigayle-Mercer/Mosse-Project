@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import Entity_Attributes.Entity_I;
+import Entity_Attributes.Plant;
 import processing.core.*;
 
 public final class VirtualWorld extends PApplet {

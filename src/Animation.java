@@ -1,3 +1,6 @@
+import Entity_Attributes.Animates;
+import Entity_Attributes.Entity_I;
+
 public class Animation extends Action{
     public Animation(Entity_I entity, WorldModel world, ImageStore imageStore, int repeatCount) {
         super(entity, world, imageStore, repeatCount);

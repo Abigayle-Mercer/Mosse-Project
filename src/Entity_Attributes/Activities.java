@@ -1,10 +1,13 @@
+package Entity_Attributes;
+
+import Entity_Attributes.Entity_I;
 import processing.core.PImage;
 
 import java.util.List;
 
 
 
-public abstract class Activities implements Entity_I{
+public abstract class Activities implements Entity_I {
 
     private final String id;
     private Point position;

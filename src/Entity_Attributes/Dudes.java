@@ -1,9 +1,9 @@
+package Entity_Attributes;
+
+import Pathing.AStarPathingStrategy;
+import Pathing.PathingStrategy;
 import processing.core.PImage;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Dudes extends Move implements Animates, Transformable {
@@ -42,17 +42,17 @@ public abstract class Dudes extends Move implements Animates, Transformable {
         return path.get(0);
     }
 
-//        PathingStrategy ps = new SingleStepPathingStrategy();
+//        Pathing.PathingStrategy ps = new Pathing.SingleStepPathingStrategy();
 //        List<Point> path = ps.computePath(this.getPosition(), destPos,
-//                (Point p) -> (((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
-//                this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
+//                (Point p) -> (((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == Entities.STUMP.class))),
+//                this::adjacent, Pathing.PathingStrategy.CARDINAL_NEIGHBORS);
 //        return path.get(0);
 //    }
 
 //        List<Point> l = new ArrayList<>(Arrays.asList());
 //
 //        while (l.get(0) != destPos) {
-//            PathingStrategy ps = new AStarPathingStrategy();
+//            Pathing.PathingStrategy ps = new Pathing.AStarPathingStrategy();
 //            l += LinkedList<Point> path =  ps.computePath();
 //        }
 //        return l;
@@ -63,11 +63,11 @@ public abstract class Dudes extends Move implements Animates, Transformable {
 //        int horiz = Integer.signum(destPos.getX() - this.getPosition().getX());
 //        Point newPos = new Point(this.getPosition().getX() + horiz, this.getPosition().getY());
 //
-//        if (horiz == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != STUMP.class) {
+//        if (horiz == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != Entities.STUMP.class) {
 //            int vert = Integer.signum(destPos.getY() - this.getPosition().getY());
 //            newPos = new Point(this.getPosition().getX(), this.getPosition().getY() + vert);
 //
-//            if (vert == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != STUMP.class) {
+//            if (vert == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != Entities.STUMP.class) {
 //                newPos = this.getPosition();
 //            }
 //        }

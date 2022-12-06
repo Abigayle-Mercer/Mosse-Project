@@ -1,8 +1,11 @@
+package Entities;
+
+import Entity_Attributes.Dudes;
 import processing.core.PImage;
 
 import java.util.*;
 
-public class DUDE_NOT_FULL extends Dudes{
+public class DUDE_NOT_FULL extends Dudes {
 
 
     public DUDE_NOT_FULL(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod, int resourceCount, int resourceLimit) {

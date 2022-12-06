@@ -1,18 +1,20 @@
+package Entities;
+
+import java.util.*;
+
 import processing.core.PImage;
 
-import java.util.List;
-import java.util.Random;
 
-public class STUMP implements Entity_I{
+public class HOUSE implements Entity_I {
+
 
     private final String id;
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
 
-    // comment
 
-    public STUMP(String id, Point position, List<PImage> images) {
+    public HOUSE(String id, Point position, List<PImage> images) {
         this.id = id;
         this.position = position;
         this.images = images;
@@ -23,6 +25,7 @@ public class STUMP implements Entity_I{
     public String getId() {
         return id;
     }
+
 
 
     public void setPosition(Point position) {
@@ -39,10 +42,11 @@ public class STUMP implements Entity_I{
 
     public void setImageIndex(int i) { imageIndex = i;}
 
-    @Override
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
 
-    }
+    @Override
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {}
+
 
 
 }
+
