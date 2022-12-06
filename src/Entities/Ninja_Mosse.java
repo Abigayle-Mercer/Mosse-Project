@@ -54,7 +54,7 @@ public class Ninja_Mosse extends Move implements Animates, Transformable {
     public Point nextPosition(WorldModel world, Point destPos) {
         PathingStrategy ps = new AStarPathingStrategy();
         List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
-                this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
+                Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
         return path.get(0);
     }
 
