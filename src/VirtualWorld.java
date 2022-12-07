@@ -89,13 +89,29 @@ public final class VirtualWorld extends PApplet {
             }
         }
     }
+
+    public void overlayAyaan(Point p)
+    {
+        for(int x =-2; x < 2; x++)
+        {
+            for( int y =-2; y<2; y++)
+            {
+                Point tp = new Point(p.getX()+x, p.getY()+y);
+                if(world.withinBounds(tp))
+                {
+                    String s = Integer.toString((x+2)+ ((y+2)*4));
+                    world.setBackgroundCell(tp,new Background("ayaan"+s, imageStore.getImageList("ayaan"+s)));
+                }
+            }
+        }
+    }
     public void mousePressed() {
         Point pressed = mouseToPoint();
         System.out.println("CLICK! " + pressed.getX() + ", " + pressed.getY());
 
         Optional<Entity_I> entityOptional = world.getOccupant(pressed);
         if (!entityOptional.isPresent()) {
-            overlayArea(pressed);
+            overlayAyaan(pressed);
 
             Ninja_Mosse n = new Ninja_Mosse("01",pressed,imageStore.getImageList("ninja"),1,1);
             world.addEntity(n);
