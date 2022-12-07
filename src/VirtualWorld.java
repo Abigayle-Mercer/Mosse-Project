@@ -102,11 +102,13 @@ public final class VirtualWorld extends PApplet {
                 Optional<Entity_I> entity_temp = world.findNearest(pressed,new ArrayList<>(List.of(FAIRY.class, Dudes.class)));
                 if (entity_temp.isPresent())
                 {
-                    Zombie_Mosse z = new Zombie_Mosse(entity_temp.get(),imageStore);
-
-                    world.removeEntity(entity_temp.get(),scheduler);
-                    world.addEntity(z);
-                    z.scheduleActions(scheduler,world,imageStore);
+                    if(entity_temp.get() instanceof Dudes){
+                        Dudes d = ((Dudes) entity_temp.get());
+                        d.transformToZombieMosse(world,scheduler,imageStore);
+                    } else if(entity_temp.get() instanceof FAIRY){
+                        FAIRY f = ((FAIRY) entity_temp.get());
+                        f.transformToZombieMosse(world,scheduler,imageStore);
+                    }
                 }
             }
 

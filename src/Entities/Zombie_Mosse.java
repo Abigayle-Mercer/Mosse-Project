@@ -17,8 +17,8 @@ public class Zombie_Mosse extends Move implements Animates, Transformable {
     private final double animationPeriod;
     private int health;
 
-    private static final double ACTION_PERIOD = 0;
-    private static final double ANIMATION_PERIOD = 1;
+    public static final double ACTION_PERIOD = 0;
+    public static final double ANIMATION_PERIOD = 1;
 
     public Zombie_Mosse(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
         super(id, position, images, actionPeriod);
