@@ -2,6 +2,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import Entities.FAIRY;
+import Entities.STUMP;
+import Entities.Zombie_Mosse;
+import Entity_Attributes.Dudes;
 import Entity_Attributes.Entity_I;
 import Entity_Attributes.Plant;
 import Starter_Classes.*;
@@ -91,6 +95,22 @@ public final class VirtualWorld extends PApplet {
         Optional<Entity_I> entityOptional = world.getOccupant(pressed);
         if (!entityOptional.isPresent()) {
             overlayArea(pressed);
+
+
+            for(int i = 0; i < 5; i++)
+            {
+                Optional<Entity_I> entity_temp = world.findNearest(pressed,new ArrayList<>(List.of(FAIRY.class, Dudes.class)));
+                if (entity_temp.isPresent())
+                {
+                    Zombie_Mosse z = new Zombie_Mosse(entity_temp.get(),imageStore);
+
+                    world.removeEntity(entity_temp.get(),scheduler);
+                    world.addEntity(z);
+                    z.scheduleActions(scheduler,world,imageStore);
+                }
+            }
+
+//            Optional<Entity_I> fairyTarget
 //            world.setBackgroundCell(pressed,new Background("tmp", imageStore.getImageList("tmp")));
 //            Entity_I entity = entityOptional.get();
             // activate!

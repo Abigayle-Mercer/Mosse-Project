@@ -21,6 +21,12 @@ public final class Functions {
     public static final String SAPLING_KEY = "sapling";
     public static final String TREE_KEY = "tree";
 
+    public static final String AYAAN_KEY = "ayaan";
+
+    public static final String NINJA_KEY = "ninja";
+    public static final String ZOMBIE_KEY = "zombie";
+
+
  /*
        Assumes that there is no entity currently occupying the
        intended destination cell.
