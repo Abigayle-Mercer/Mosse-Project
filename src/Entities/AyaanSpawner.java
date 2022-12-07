@@ -19,11 +19,11 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public class Ayaan extends Move implements Transformable{
+public class AyaanSpawner extends Move implements Transformable{
 
 
 
-    public Ayaan(String id, Point position, List<PImage> images, double actionPeriod) {
+    public AyaanSpawner(String id, Point position, List<PImage> images, double actionPeriod) {
         super(id, position, images, actionPeriod);
 
     }
@@ -66,22 +66,29 @@ public class Ayaan extends Move implements Transformable{
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(FAIRY.class)));
+        Random rand = new Random();
+        double newaction = rand.nextDouble(0.1, 2.0);
 
 
-        if (target.isEmpty() || !ayaanMoveTo(world, target.get(), scheduler)) {
+
+        Zombie_Mosse z = new Zombie_Mosse(this.getId(), new Point(world.getNumCols()-1, world.getNumRows()-1), imageStore.getImageList("zombie"), newaction, 0.1);
+        world.addEntity(z);
+        z.scheduleActions(scheduler, world, imageStore);
+
+        Ninja_Mosse n = new Ninja_Mosse(this.getId(), new Point(1, 1), imageStore.getImageList("ninja"), newaction, 0.1);
+        world.addEntity(n);
+        n.scheduleActions(scheduler, world, imageStore);
+
+        ayaanMoveTo(world, target.get(), scheduler);
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
-        }
+
     }
 
 
     @Override
     public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        AyaanSpawner tempa = new AyaanSpawner(this.getId(), new Point(this.getPosition().getX()+1, this.getPosition().getY()), this.getImages(), this.getActionPeriod());
-        world.addEntity(tempa);
-
         world.removeEntity(this, scheduler);
-
-        tempa.scheduleActions(scheduler, world, imageStore);
         return false;
     }
 }
+

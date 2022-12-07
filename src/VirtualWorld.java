@@ -108,9 +108,15 @@ public final class VirtualWorld extends PApplet {
 
         Optional<Entity_I> entityOptional = world.getOccupant(pressed);
         if (entityOptional.isPresent() && entityOptional.get() instanceof Ayaan) {
+
+            Ayaan a = (Ayaan) entityOptional.get();
+            a.transform(world, scheduler, imageStore);
+
+
             overlayAyaan(pressed);
 
-            Ninja_Mosse n = new Ninja_Mosse("01",pressed,imageStore.getImageList("ninja"),Ninja_Mosse.ACTION_PERIOD,Ninja_Mosse.ANIMATION_PERIOD);
+            Point position = new Point(pressed.getX() + 2, pressed.getY() + 2);
+            Ninja_Mosse n = new Ninja_Mosse("01",position,imageStore.getImageList("ninja"),1,1);
             world.addEntity(n);
             n.scheduleActions(scheduler,world,imageStore);
 
