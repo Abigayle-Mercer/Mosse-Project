@@ -28,20 +28,26 @@ public class Ayaan extends Move{
 
     @Override
     public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-
+        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), this.getActionPeriod());
     }
 
 
     @Override
     public Point nextPosition(WorldModel world, Point destPos) {
-        PathingStrategy ps = new SingleStepPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)))),
-                Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
+        Random rand = new Random();
+        List<Point> path = PathingStrategy.CARDINAL_NEIGHBORS.apply(this.getPosition()).filter((Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p))))).toList();
 
 
-        Random rand = new Random(); //instance of random class
-        int index = rand.nextInt(0, 3);
-        return path.get(index);
+
+
+         //instance of random class
+        return path.size() > 0? path.get(rand.nextInt(0,path.size())) : this.getPosition();
+    }
+
+    @Override
+    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        this.moveTo(world,this,scheduler);
+       scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
     }
 
 
