@@ -35,7 +35,7 @@ public class Ayaan extends Move{
     @Override
     public Point nextPosition(WorldModel world, Point destPos) {
         PathingStrategy ps = new SingleStepPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
+        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)))),
                 Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
 
 
