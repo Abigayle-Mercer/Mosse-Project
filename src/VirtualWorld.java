@@ -110,7 +110,7 @@ public final class VirtualWorld extends PApplet {
         if (entityOptional.isPresent() && entityOptional.get() instanceof Ayaan) {
             overlayAyaan(pressed);
 
-            Ninja_Mosse n = new Ninja_Mosse("01",pressed,imageStore.getImageList("ninja"),1,1);
+            Ninja_Mosse n = new Ninja_Mosse("01",pressed,imageStore.getImageList("ninja"),Ninja_Mosse.ACTION_PERIOD,Ninja_Mosse.ANIMATION_PERIOD);
             world.addEntity(n);
             n.scheduleActions(scheduler,world,imageStore);
 

@@ -18,7 +18,7 @@ public class Zombie_Mosse extends Move implements Animates, Transformable {
     private int health;
 
     public static final double ACTION_PERIOD = 1;
-    public static final double ANIMATION_PERIOD = 1;
+    public static final double ANIMATION_PERIOD = 0.1f;
 
     public Zombie_Mosse(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
         super(id, position, images, actionPeriod);
@@ -29,13 +29,6 @@ public class Zombie_Mosse extends Move implements Animates, Transformable {
 
     }
 
-    public Zombie_Mosse(Entity_I E, ImageStore im) {
-        super(E.getId(), E.getPosition(), im.getImageList(Functions.ZOMBIE_KEY), ACTION_PERIOD);
-        this.animationPeriod = ANIMATION_PERIOD;
-
-        Random rand = new Random(); //instance of random class
-        this.health = rand.nextInt(4, 9);
-    }
 
     public int getHealth() {
         return health;
