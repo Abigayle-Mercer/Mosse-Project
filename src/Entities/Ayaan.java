@@ -19,19 +19,14 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public class Ayaan extends Move implements Transformable{
+abstract public class Ayaan extends Move implements Transformable{
 
 
 
     public Ayaan(String id, Point position, List<PImage> images, double actionPeriod) {
         super(id, position, images, actionPeriod);
-
     }
 
-    @Override
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), this.getActionPeriod());
-    }
 
     // i am seggsy
 
@@ -63,25 +58,5 @@ public class Ayaan extends Move implements Transformable{
         }
     }
 
-    @Override
-    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(FAIRY.class)));
 
-
-        if (target.isEmpty() || !ayaanMoveTo(world, target.get(), scheduler)) {
-            scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
-        }
-    }
-
-
-    @Override
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        AyaanSpawner tempa = new AyaanSpawner(this.getId(), new Point(this.getPosition().getX()+1, this.getPosition().getY()), this.getImages(), this.getActionPeriod());
-        world.addEntity(tempa);
-
-        world.removeEntity(this, scheduler);
-
-        tempa.scheduleActions(scheduler, world, imageStore);
-        return false;
-    }
 }

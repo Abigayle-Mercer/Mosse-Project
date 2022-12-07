@@ -15,53 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Ninja_Mosse extends Move implements Animates, Transformable {
-    private final double animationPeriod;
-    private int health;
+public class Ninja_Mosse extends Mosse {
 
-    public static final double ANIMATION_PERIOD = 0.1f;
-
-    public static final double ACTION_PERIOD = 0.1;
 
 
     public Ninja_Mosse(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
-        super(id, position, images, actionPeriod);
-        this.animationPeriod = animationPeriod;
-
-        Random rand = new Random(); //instance of random class
-        this.health = rand.nextInt(4, 9);
-
-
-    }
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int i) {
-        health = i;
-    }
-
-
-
-    @Override
-    public double getAnimationPeriod() {
-        return animationPeriod;
-    }
-
-
-
-    @Override
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), this.getActionPeriod());
-        scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
-    }
-
-    @Override
-    public Point nextPosition(WorldModel world, Point destPos) {
-        PathingStrategy ps = new AStarPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
-                Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
-        return path.size() > 0 ? path.get(0) : this.getPosition();
+        super(id, position, images, actionPeriod, animationPeriod);
     }
 
     public boolean moveToNinja(WorldModel world, Entity_I target, EventScheduler scheduler,ImageStore imageStore) {
@@ -85,20 +44,12 @@ public class Ninja_Mosse extends Move implements Animates, Transformable {
         return false;
     }
 
-    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
-        if (this.health <= 0) {
 
-            world.removeEntity(this, scheduler);
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(Zombie_Mosse.class)));
         //this.transform(world,scheduler,imageStore);
-        System.out.println("ninja health = " + this.health + " \n");
 
         if (this.transform(world, scheduler, imageStore))
         {

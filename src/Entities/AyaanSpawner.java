@@ -19,7 +19,7 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public class AyaanSpawner extends Move implements Transformable{
+public class AyaanSpawner extends Ayaan implements Transformable{
 
 
 
@@ -28,46 +28,15 @@ public class AyaanSpawner extends Move implements Transformable{
 
     }
 
-    @Override
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), this.getActionPeriod());
-    }
-
     // i am seggsy
+    // i am queeen
 
-    @Override
-    public Point nextPosition(WorldModel world, Point destPos) {
-
-        Random rand = new Random();
-        int x = rand.nextInt(0,4);
-        int y = rand.nextInt(0, 4);
-        Point newp = new Point(x, y);
-        PathingStrategy ps = new SingleStepPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)))),
-                Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
-
-
-        if (path.size() == 0) {
-            return this.getPosition();
-        }
-        int index = rand.nextInt(0, path.size());
-        return path.get(index);
-    }
-
-    public boolean ayaanMoveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
-        if (adjacent(this.getPosition(), target.getPosition())) {
-            return true;
-        } else {
-            target.setPosition(target.getPosition());
-            return super.moveTo(world, target, scheduler);
-        }
-    }
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(FAIRY.class)));
         Random rand = new Random();
-        double newaction = rand.nextDouble(0.1, 2.0);
+        double newaction = rand.nextDouble(0.1, 0.5);
 
 
 

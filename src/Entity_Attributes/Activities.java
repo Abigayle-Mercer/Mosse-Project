@@ -49,10 +49,9 @@ public abstract class Activities implements Entity_I {
 
     public double getActionPeriod() {return actionPeriod;}
 
-    abstract public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore);
-
-
-
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), this.getActionPeriod());
+    }
 
     public Action createActivityAction(WorldModel world, ImageStore imageStore) {
         return new Activity(this, world, imageStore, 0);

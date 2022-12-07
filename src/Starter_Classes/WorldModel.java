@@ -230,7 +230,7 @@ public final class WorldModel {
 
     public void parseAyaan(String[] properties, Point pt, String id, ImageStore imageStore) {
         if (properties.length == AYAAN_NUM_PROPERTIES) {
-            Ayaan entity = new Ayaan(id, pt, imageStore.getImageList(AYAAN_KEY), Double.parseDouble(properties[AYAAN_ACTION_PERIOD]));
+            Ayaan entity = new AyaanInteractable(id, pt, imageStore.getImageList(AYAAN_KEY), Double.parseDouble(properties[AYAAN_ACTION_PERIOD]));
             this.tryAddEntity(entity);
         }else{
             throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", FAIRY_KEY, FAIRY_NUM_PROPERTIES));
