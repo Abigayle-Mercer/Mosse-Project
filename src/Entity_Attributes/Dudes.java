@@ -3,6 +3,7 @@ package Entity_Attributes;
 import Entities.DUDE_FULL;
 import Entities.DUDE_NOT_FULL;
 import Entities.STUMP;
+import Entities.Zombie_Mosse;
 import Pathing.AStarPathingStrategy;
 import Pathing.PathingStrategy;
 import Starter_Classes.EventScheduler;
@@ -98,6 +99,20 @@ public abstract class Dudes extends Move implements Animates, Transformable {
         return false;
 
     }
+
+    public boolean transformToZombieMosse(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        Entity_I moose;
+        moose = new Zombie_Mosse(this.getId(), this.getPosition(), this.getImages(), this.getActionPeriod(), this.getAnimationPeriod());
+
+        world.removeEntity(this, scheduler);
+
+        world.addEntity(moose);
+        moose.scheduleActions(scheduler, world, imageStore);
+        return false;
+
+    }
+
+
 
     public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
         return super.moveTo(world, target, scheduler);
