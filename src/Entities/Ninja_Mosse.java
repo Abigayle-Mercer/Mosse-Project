@@ -88,6 +88,7 @@ public class Ninja_Mosse extends Move implements Animates, Transformable {
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(Zombie_Mosse.class)));
         this.transform(world,scheduler,imageStore);
+        System.out.println("ninja health =" + this.health + " \n");
 
         if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore)) {
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());

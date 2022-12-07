@@ -96,7 +96,7 @@ public class Zombie_Mosse extends Move implements Animates, Transformable {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(Ninja_Mosse.class)));
         this.transform(world,scheduler,imageStore);
 
-        if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore)) {
+        if (!target.isEmpty() && (!moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore))) {
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
         }
     }
