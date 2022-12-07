@@ -43,24 +43,31 @@ public class Ayaan extends Move implements Transformable{
 
 
         Random rand = new Random(); //instance of random class
-        int index = rand.nextInt(0, 3);
+        if (path.size() == 0) {
+            return this.getPosition();
+        }
+        int index = rand.nextInt(0, path.size());
         return path.get(index);
     }
 
-    public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
-        if (adjacent(this.getPosition(), new Point(20,20))) {
+    public boolean ayaanMoveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
+        Random rand = new Random();
+        int x = rand.nextInt(0,4);
+        int y = rand.nextInt(0, 4);
+        if (adjacent(this.getPosition(), new Point(x,y))) {
             return true;
         } else {
-            target.setPosition(new Point(20, 20));
+            target.setPosition(new Point(x, y));
             return super.moveTo(world, target, scheduler);
         }
     }
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(Zombie_Mosse.class)));
+        Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(FAIRY.class)));
 
-        if (target.isEmpty() || !moveTo(world, target.get(), scheduler)) {
+
+        if (target.isEmpty() || !ayaanMoveTo(world, target.get(), scheduler)) {
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
         }
     }
