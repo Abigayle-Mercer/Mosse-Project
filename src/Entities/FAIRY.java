@@ -94,6 +94,18 @@ public class FAIRY extends Move implements Animates {
         scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
     }
 
+    public boolean transformToZombieMosse(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        Entity_I moose;
+        moose = new Zombie_Mosse(this.getId(), this.getPosition(), this.getImages(), this.getActionPeriod(), this.getAnimationPeriod());
+
+        world.removeEntity(this, scheduler);
+
+        world.addEntity(moose);
+        moose.scheduleActions(scheduler, world, imageStore);
+        return false;
+
+    }
+
 
 
 }
