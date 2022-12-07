@@ -39,8 +39,8 @@ public class Ayaan extends Move implements Transformable{
     public Point nextPosition(WorldModel world, Point destPos) {
 
         Random rand = new Random();
-        int x = rand.nextInt(0,4);
-        int y = rand.nextInt(0, 4);
+        int x = rand.nextInt(0,world.getNumCols());
+        int y = rand.nextInt(0, world.getNumRows());
         Point newp = new Point(x, y);
         PathingStrategy ps = new SingleStepPathingStrategy();
         List<Point> path = ps.computePath(this.getPosition(), newp, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)))),
@@ -55,15 +55,7 @@ public class Ayaan extends Move implements Transformable{
     }
 
     public boolean ayaanMoveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
-        Random rand = new Random();
-        int x = rand.nextInt(0,4);
-        int y = rand.nextInt(0, 4);
-        if (adjacent(this.getPosition(), new Point(x,y))) {
-            return true;
-        } else {
-            target.setPosition(new Point(x, y));
-            return super.moveTo(world, target, scheduler);
-        }
+        return super.moveTo(world, target, scheduler);
     }
 
     @Override
