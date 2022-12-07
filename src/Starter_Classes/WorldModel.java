@@ -32,9 +32,9 @@ public final class WorldModel {
     private static final int FAIRY_ACTION_PERIOD = 1;
     private static final int FAIRY_NUM_PROPERTIES = 2;
 
-    private static final int AYAAN_NUM_PROPERTIES = 2;
+    private static final int AYAAN_NUM_PROPERTIES = 1;
 
-    private static final int AYAAN_ACTION_PERIOD = 1;
+    private static final int AYAAN_ACTION_PERIOD = 0;
 
     private static final String AYAAN_KEY = "ayaan";
 
@@ -154,6 +154,7 @@ public final class WorldModel {
 
 
     public void load(Scanner saveFile, ImageStore imageStore, Background defaultBackground) {
+        this.parseSaveFile(saveFile, imageStore, defaultBackground);
         this.parseSaveFile(saveFile, imageStore, defaultBackground);
         if (this.background == null) {
             this.background = new Background[this.numRows][this.numCols];
