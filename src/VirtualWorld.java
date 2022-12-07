@@ -2,10 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import Entities.FAIRY;
-import Entities.Ninja_Mosse;
-import Entities.STUMP;
-import Entities.Zombie_Mosse;
+import Entities.*;
 import Entity_Attributes.Dudes;
 import Entity_Attributes.Entity_I;
 import Entity_Attributes.Plant;
@@ -110,7 +107,7 @@ public final class VirtualWorld extends PApplet {
         System.out.println("CLICK! " + pressed.getX() + ", " + pressed.getY());
 
         Optional<Entity_I> entityOptional = world.getOccupant(pressed);
-        if (!entityOptional.isPresent()) {
+        if (entityOptional.isPresent() && entityOptional.get() instanceof Ayaan) {
             overlayAyaan(pressed);
 
             Ninja_Mosse n = new Ninja_Mosse("01",pressed,imageStore.getImageList("ninja"),1,1);

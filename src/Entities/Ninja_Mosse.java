@@ -59,20 +59,28 @@ public class Ninja_Mosse extends Move implements Animates, Transformable {
         PathingStrategy ps = new AStarPathingStrategy();
         List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)) || (world.getOccupancyCell(p).getClass() == STUMP.class))),
                 Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
-        return path.get(0);
+        return path.size() > 0 ? path.get(0) : this.getPosition();
     }
 
-    @Override
-    public boolean moveTo(WorldModel world, Entity_I target, EventScheduler scheduler) {
+    public boolean moveToNinja(WorldModel world, Entity_I target, EventScheduler scheduler,ImageStore imageStore) {
         if (adjacent(this.getPosition(), target.getPosition())) {
             if (target instanceof Zombie_Mosse) {
                 Zombie_Mosse zombieMosse = (Zombie_Mosse) target;
                 zombieMosse.setHealth(zombieMosse.getHealth() - 1);
+//                zombieMosse.transform(world,scheduler,imageStore);
             }
             return true;
         } else {
-            return super.moveTo(world, target, scheduler);
+            if (target instanceof Zombie_Mosse) {
+                Zombie_Mosse zombieMosse = (Zombie_Mosse) target;
+                if (zombieMosse.getHealth() > 0) {
+                    return super.moveTo(world, target, scheduler);
+                } else {
+                    return false;
+                }
+            }
         }
+        return false;
     }
 
     public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
@@ -87,10 +95,15 @@ public class Ninja_Mosse extends Move implements Animates, Transformable {
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(Zombie_Mosse.class)));
-        this.transform(world,scheduler,imageStore);
-        System.out.println("ninja health =" + this.health + " \n");
+        //this.transform(world,scheduler,imageStore);
+        System.out.println("ninja health = " + this.health + " \n");
 
-        if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore)) {
+        if (this.transform(world, scheduler, imageStore))
+        {
+            if (target.isPresent())
+            {
+                this.moveToNinja(world, target.get(), scheduler,imageStore);
+            }
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());
         }
     }
