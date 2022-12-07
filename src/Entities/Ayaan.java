@@ -37,12 +37,16 @@ public class Ayaan extends Move implements Transformable{
 
     @Override
     public Point nextPosition(WorldModel world, Point destPos) {
+
+        Random rand = new Random();
+        int x = rand.nextInt(0,4);
+        int y = rand.nextInt(0, 4);
+        Point newp = new Point(x, y);
         PathingStrategy ps = new SingleStepPathingStrategy();
-        List<Point> path = ps.computePath(this.getPosition(), destPos, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)))),
+        List<Point> path = ps.computePath(this.getPosition(), newp, (Point p) -> (world.withinBounds(p) && ((!world.isOccupied(p)))),
                 Move::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
 
 
-        Random rand = new Random(); //instance of random class
         if (path.size() == 0) {
             return this.getPosition();
         }
