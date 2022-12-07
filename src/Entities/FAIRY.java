@@ -101,7 +101,7 @@ public class FAIRY extends Move implements Animates {
         world.removeEntity(this, scheduler);
 
         world.addEntity(moose);
-//        moose.scheduleActions(scheduler, world, imageStore);
+        moose.scheduleActions(scheduler, world, imageStore);
         return false;
 
     }

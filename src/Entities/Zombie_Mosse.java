@@ -17,7 +17,7 @@ public class Zombie_Mosse extends Move implements Animates, Transformable {
     private final double animationPeriod;
     private int health;
 
-    public static final double ACTION_PERIOD = 0;
+    public static final double ACTION_PERIOD = 1;
     public static final double ANIMATION_PERIOD = 1;
 
     public Zombie_Mosse(String id, Point position, List<PImage> images, double actionPeriod, double animationPeriod) {
@@ -94,7 +94,7 @@ public class Zombie_Mosse extends Move implements Animates, Transformable {
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         Optional<Entity_I> target = world.findNearest(this.getPosition(), new ArrayList<>(List.of(Ninja_Mosse.class)));
-
+        this.transform(world,scheduler,imageStore);
 
         if (target.isEmpty() || !moveTo(world, target.get(), scheduler) || !transform(world, scheduler, imageStore)) {
             scheduler.scheduleEvent(this, createActivityAction(world, imageStore), this.getActionPeriod());

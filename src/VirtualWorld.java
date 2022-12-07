@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import Entities.FAIRY;
+import Entities.Ninja_Mosse;
 import Entities.STUMP;
 import Entities.Zombie_Mosse;
 import Entity_Attributes.Dudes;
@@ -96,6 +97,9 @@ public final class VirtualWorld extends PApplet {
         if (!entityOptional.isPresent()) {
             overlayArea(pressed);
 
+            Ninja_Mosse n = new Ninja_Mosse("01",pressed,imageStore.getImageList("ninja"),1,1);
+            world.addEntity(n);
+            n.scheduleActions(scheduler,world,imageStore);
 
             for(int i = 0; i < 5; i++)
             {
