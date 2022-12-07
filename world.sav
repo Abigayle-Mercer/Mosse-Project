@@ -17,6 +17,7 @@ Comment:
         sapling [id] [x] [y] HEALTH
         house [id] [x] [y]
         stump [id] [x] [y]
+        ayaan [id] [x] [y] ACTION_PERIOD
       Each Entity in this world.sav file has no id, so theres just two spaces between the x and y.
 Rows:
     30
@@ -132,6 +133,7 @@ obstacle  35 21 1.147
     tree  37 27 0.367 1.195 2
 obstacle  18 11 1.089
 obstacle  05 08 1.097
+   ayaan  00 37 29 1.098
    house  36 26
 obstacle  00 08 1.018
 obstacle  00 07 1.141

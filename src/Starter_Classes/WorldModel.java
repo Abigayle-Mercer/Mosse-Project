@@ -31,6 +31,15 @@ public final class WorldModel {
     private static final int FAIRY_ANIMATION_PERIOD = 0;
     private static final int FAIRY_ACTION_PERIOD = 1;
     private static final int FAIRY_NUM_PROPERTIES = 2;
+
+    private static final int AYAAN_NUM_PROPERTIES = 2;
+
+    private static final int AYAAN_ACTION_PERIOD = 1;
+
+    private static final String AYAAN_KEY = "ayaan";
+
+
+
     private static final int TREE_ANIMATION_PERIOD = 0;
     private static final int TREE_ACTION_PERIOD = 1;
     private static final int TREE_HEALTH = 2;
@@ -218,6 +227,16 @@ public final class WorldModel {
         }
     }
 
+    public void parseAyaan(String[] properties, Point pt, String id, ImageStore imageStore) {
+        if (properties.length == AYAAN_NUM_PROPERTIES) {
+            Ayaan entity = new Ayaan(id, pt, imageStore.getImageList(AYAAN_KEY), Double.parseDouble(properties[AYAAN_ACTION_PERIOD]));
+            this.tryAddEntity(entity);
+        }else{
+            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", FAIRY_KEY, FAIRY_NUM_PROPERTIES));
+        }
+    }
+
+
     public void parseTree(String[] properties, Point pt, String id, ImageStore imageStore) {
         if (properties.length == TREE_NUM_PROPERTIES) {
             TREE entity = new TREE(id, pt, imageStore.getImageList(Functions.TREE_KEY), Double.parseDouble(properties[TREE_ACTION_PERIOD]), Double.parseDouble(properties[TREE_ANIMATION_PERIOD]), Integer.parseInt(properties[TREE_HEALTH]), 0);
@@ -268,6 +287,7 @@ public final class WorldModel {
                 case DUDE_KEY -> parseDude( properties, pt, id, imageStore);
                 case FAIRY_KEY -> parseFairy(properties, pt, id, imageStore);
                 case HOUSE_KEY -> parseHouse( properties, pt, id, imageStore);
+                case AYAAN_KEY -> parseAyaan( properties, pt, id, imageStore);
                 case Functions.TREE_KEY -> parseTree( properties, pt, id, imageStore);
                 case Functions.SAPLING_KEY -> parseSapling( properties, pt, id, imageStore);
                 case Functions.STUMP_KEY -> parseStump( properties, pt, id, imageStore);
